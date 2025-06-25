@@ -1,0 +1,264 @@
+{
+  "main": {
+    "id": "c6449d550ba96e9c",
+    "type": "split",
+    "children": [
+      {
+        "id": "d353011fc69f28ce",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4bd679e28f7b176c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Network/Devices/Switches.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Switches"
+            }
+          },
+          {
+            "id": "33adacf5e0913ad0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Network/(VLAN) Virtual LAN.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "(VLAN) Virtual LAN"
+            }
+          },
+          {
+            "id": "3c47fc381cc354e4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Network/Ethernet.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Ethernet"
+            }
+          },
+          {
+            "id": "3eb18a2f67d7dcad",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "Drawing 2025-05-05 11.00.01.excalidraw"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "03c7d8a6e02c5501",
+    "type": "split",
+    "children": [
+      {
+        "id": "1391734534035fb4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5d3f46d88e716dd5",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "3309fe8d95c2b9fc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c78c4b0a6485cb71",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "right": {
+    "id": "d79baacb2b934d70",
+    "type": "split",
+    "children": [
+      {
+        "id": "164f2f28a71dd732",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "68e7132074244cc2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Drawing 2025-05-05 11.00.01.excalidraw"
+            }
+          },
+          {
+            "id": "6e6e105901f4a780",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Network/Switches.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Switches"
+            }
+          },
+          {
+            "id": "07998a2653286db4",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "13a0ddf43642bf82",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Docker.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Docker"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-excalidraw-plugin:New drawing": false
+    }
+  },
+  "active": "33adacf5e0913ad0",
+  "lastOpenFiles": [
+    "Network/Devices/Switches.md",
+    "Network/Devices/Router.md",
+    "Network/TCP-IP Modell.md",
+    "Network/Network topologies.md",
+    "Network/IPv6.md",
+    "Network/IPv4.md",
+    "Network/Ethernet.md",
+    "Network/Cloud.md",
+    "Network/(VLAN) Virtual LAN.md",
+    "Network/(OSI) Open Systems Interconnection-Modell.md",
+    "Programming Languages/Go.md",
+    "Cables, Connectors and Ports.md",
+    "Cisco IOS CLI.md",
+    "Cisco Packet Tracer.md",
+    "Cryptography.md",
+    "Docker.md",
+    "Email.md",
+    "Number Systems.md",
+    "Organizations.md",
+    "Printer.md",
+    "Virtualization.md",
+    "Präsi WLAN Secu.md",
+    "Bilder/VLAN",
+    "Bilder/VLAN/VLAN tag fields.png",
+    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
+    "Pasted Image 20250624121006_649.png",
+    "Pasted image 20250624095819.png",
+    "Pasted Image 20250624095816_891.png",
+    "Pasted image 20250624095758.png",
+    "Benefits VLAN.png",
+    "Network/Routing.md",
+    "Network/Devices/Networking Devices.md",
+    "Network/Devices",
+    "Bilder/Cisco IOS CLI/Speed Mismatch.png",
+    "Pasted Image 20250618141343_579.png",
+    "Bilder/Cisco IOS CLI/Speed Mismatch.png",
+    "Pasted Image 20250618141239_030.png",
+    "Network/Protocols/(UDP) User Datagram Protocol.md",
+    "Bilder/Cryptography",
+    "bilder/Cryptography",
+    "Bilder/UDP",
+    "bilder/UDP",
+    "Bilder/TCP",
+    "bilder/tcp",
+    "Bilder/Organizations",
+    "Bilder/Nmap"
+  ]
+}
