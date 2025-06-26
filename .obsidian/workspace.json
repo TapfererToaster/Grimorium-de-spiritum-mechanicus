@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Network/Devices/Switches.md",
+                "file": "Network/Routing.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Switches"
+              "title": "Routing"
             }
           },
           {
@@ -61,8 +61,7 @@
               "title": "Drawing 2025-05-05 11.00.01.excalidraw"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -184,13 +183,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Docker.md",
+                "file": "Network/Routing.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Docker"
+              "title": "Outline of Routing"
             }
           }
         ],
@@ -212,24 +211,37 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "33adacf5e0913ad0",
+  "active": "4bd679e28f7b176c",
   "lastOpenFiles": [
+    "Docker.md",
     "Network/Devices/Switches.md",
+    "Network/(VLAN) Virtual LAN.md",
+    "VLAN Troubleshooting Scenario.png.md",
+    "Bilder/VLAN/VLAN Troubleshooting Scenario.png",
+    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
+    "Pasted Image 20250626111155_035.png",
+    "Bilder/VLAN/VLAN Troubleshooting.png",
+    "Network/Ethernet.md",
+    "Pasted Image 20250626110856_222.png",
+    "Bilder/VLAN/Layer 3 Switch Routing.png",
+    "Pasted Image 20250626100244_482.png",
+    "Bilder/VLAN/Layer 3 Switch VLAN routing.png",
+    "Pasted Image 20250626090607_420.png",
+    "Pasted image 20250626090156 5.png",
+    "Pasted image 20250626090156 4.png",
     "Network/Devices/Router.md",
+    "Network/Routing.md",
     "Network/TCP-IP Modell.md",
     "Network/Network topologies.md",
     "Network/IPv6.md",
     "Network/IPv4.md",
-    "Network/Ethernet.md",
     "Network/Cloud.md",
-    "Network/(VLAN) Virtual LAN.md",
     "Network/(OSI) Open Systems Interconnection-Modell.md",
     "Programming Languages/Go.md",
     "Cables, Connectors and Ports.md",
     "Cisco IOS CLI.md",
     "Cisco Packet Tracer.md",
     "Cryptography.md",
-    "Docker.md",
     "Email.md",
     "Number Systems.md",
     "Organizations.md",
@@ -237,21 +249,8 @@
     "Virtualization.md",
     "Präsi WLAN Secu.md",
     "Bilder/VLAN",
-    "Bilder/VLAN/VLAN tag fields.png",
-    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
-    "Pasted Image 20250624121006_649.png",
-    "Pasted image 20250624095819.png",
-    "Pasted Image 20250624095816_891.png",
-    "Pasted image 20250624095758.png",
-    "Benefits VLAN.png",
-    "Network/Routing.md",
     "Network/Devices/Networking Devices.md",
     "Network/Devices",
-    "Bilder/Cisco IOS CLI/Speed Mismatch.png",
-    "Pasted Image 20250618141343_579.png",
-    "Bilder/Cisco IOS CLI/Speed Mismatch.png",
-    "Pasted Image 20250618141239_030.png",
-    "Network/Protocols/(UDP) User Datagram Protocol.md",
     "Bilder/Cryptography",
     "bilder/Cryptography",
     "Bilder/UDP",

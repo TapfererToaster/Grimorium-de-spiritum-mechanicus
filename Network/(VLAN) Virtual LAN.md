@@ -117,7 +117,7 @@ S1(config-vlan)# name student
 S1(config-vlan)# end
 ```
 
-## Port Assignment
+## Access Port Assignment
 ```
 Switch# configure terminal
 Switch(config)# interface interface-id
@@ -188,6 +188,7 @@ To delete the entire `vlan.dat` file use `delete flash:vlan.dat`. This will dele
 >To restore a Catalyst switch to its factory default condition, unplug all cables except the console and power cable from the switch. Then enter the `erase startup-config` privileged EXEC mode command followed by the `delete vlan.dat` command.
 
 # Trunk Configuration
+#Cisco_CLI 
 >[!important]
 >Remember a VLAN trunk is a Layer 2 link between two switches that carries traffic for all VLANs (unless the allowed VLAN list is restricted manually or dynamically).
 
@@ -264,3 +265,133 @@ The options are:
 	- The interface becomes a trunk interface if he neighboring interface is set to trunk, desirable or dynamic auto mode
 - **trunk**:
 	- Puts the interface into permanent trunking mode and negotiates to convert the neighboring link into a trunk link.
+	- The interface becomes a trunk interface even if the neighboring interface is not a trunk interface.
+
+>[!tip]
+>Use the `switchport nonegotiate` command to stop DTP negotiation. 
+>This command can only be used when the interface switchport mode is `access` or `trunk`. 
+>You must manually configure the neighboring interface as a trunk interface to establish a trunk 
+>link.
+
+![[Results of DTP Configuration.png]]
+## Verify DTP Mode
+To verify the DTP mode use `show dtp interface interface-id`.
+
+>[!note]
+>A general best practice is to set the interface to `trunk` and `nonegotiate` when a trunk link is required. On links where trunking is not intended, DTP should be turned off.
+
+# Inter-VLAN Routing
+Hosts in one VLAN cannot communicate with hosts in other VLANs, unless there is a router or a Layer 3 switch.
+*Inter-VLAN routing* is the process of forwarding network traffic from one VLAN to another VLAN.
+## Legacy Inter-VLAN routing
+![[Legacy Inter-VLAN routing.png]]
+A legacy method of inter VLAN routing was using a Router and connecting it with each VLAN.
+
+## Router on a Stick
+ ![[Router on a Stick.png]]
+ The *router on a stick* method only needs one Ethernet port, which is configured as an 802.1Q trunk and connected to a trunk port on a Layer 2 switch.
+### Subinterfaces 
+This method requires the creation of *subinterfaces* for each VLAN to be routed.
+To create a subinterface use `interface interface-id.subinterface-id`.
+After that you configure the subinterface to respond to 802.1Q encapsulated traffic from a specified VLAN with `encapsulation dot1q vlan-id [native]`. The `native` keyword is used to set the native VLAN to something other than VLAN 1.
+You also have to set a IP address to the subinterface, which will serve as a default gateway.
+
+**Example**
+#Cisco_CLI 
+```
+R1(config)# interface G0/0/1.10
+R1(config-subif)# description Default Gateway for VLAN 10
+R1(config-subif)# encapsulation dot1Q 10
+R1(config-subif)# ip add 192.168.10.1 255.255.255.0
+R1(config-subif)# exit
+```
+
+## Layer 3 Switch/ SVI inter-VLAN routing
+![[Layer 3 Switch VLAN routing.png]]
+This method uses a *Layer 3 switch* and *switched virtual interfaces (SVI)*.
+The advantages of using Layer 3 switches :
+- much faster than router-on-a-stick 
+- no need for external links from the switch to the router
+- not limited to one link because Layer 2 EtherChannels can be used as trunk links between the switches to increase bandwidth.
+- lower latency because data does not need to leave the switch in order to be routed to a different network.
+- They more commonly deployed in a campus LAN than routers.
+
+### Switch Configuration
+#Cisco_CLI 
+1. Create VLANs
+```
+D1(config)# vlan 10
+D1(config-vlan)# name LAN10
+D1(config-vlan)# vlan 20
+D1(config-vlan)# name LAN20
+```
+2. Create the SVI VLAN interfaces.
+```
+D1(config)# interface vlan 10
+D1(config-if)# description Default Gateway SVI for 192.168.10.0/24
+D1(config-if)# ip add 192.168.10.1 255.255.255.0
+D1(config-if)# no shut
+D1(config-if)# exit
+D1(config)#
+D1(config)# int vlan 20
+D1(config-if)# description Default Gateway SVI for 192.168.20.0/24
+D1(config-if)# ip add 192.168.20.1 255.255.255.0
+D1(config-if)# no shut
+D1(config-if)# exit
+```
+3. Configure access ports
+```
+D1(config)# interface GigabitEthernet1/0/6
+D1(config-if)# description Access port to PC1
+D1(config-if)# switchport mode access
+D1(config-if)# switchport access vlan 10
+D1(config-if)# exit
+D1(config)#
+D1(config)# interface GigabitEthernet1/0/18
+D1(config-if)# description Access port to PC2
+D1(config-if)# switchport mode access
+D1(config-if)# switchport access vlan 20
+D1(config-if)# exit
+```
+4. Enable IP routing
+```
+D1(config)# ip routing
+```
+
+## Routing
+![[Layer 3 Switch Routing.png]]
+If VLANs are to be reachable by other Layer 3 devices, they mus be advertised using static or dynamic routing. To enable routing on a Layer 3 switch, a routed port must be configured.
+
+A routed port (G0/0/1) is created by disabling the switchport feature on a Layer 2 port with `no switchport`, which converts it into a Layer 3 interface.
+
+### Configuration
+#Cisco_CLI 
+1. Configure the routed port
+```
+D1(config)# interface GigabitEthernet0/0/1
+D1(config-if)# description routed Port Link to R1
+D1(config-if)# no switchport
+D1(config-if)# ip address 10.10.10.2 255.255.255.0
+D1(config-if)# no shut
+D1(config-if)# exit
+```
+2. Enable routing
+```
+D1(config)# ip routing
+```
+3. Configure routing
+   Configure the OSPF routing protocol to advertise VLAN 10 and VLAN 20 netoworks
+```
+D1(config)# router ospf 10
+D1(config-router)# network 192.168.10.0 0.0.0.255 area 0
+D1(config-router)# network 192.168.20.0 0.0.0.255 area 0
+D1(config-router)# network 10.10.10.0 0.0.0.3 area 0
+```
+4. Verify routing
+```
+D1# show ip route | begin Gateway
+```
+
+## Troubleshooting
+
+![[VLAN Troubleshooting.png]]
