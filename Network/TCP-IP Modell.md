@@ -130,7 +130,7 @@ Each Layer of the TCP/IP model provides a service for the layer above it, this i
 ## Application Layer
 - [[(DNS) Domain Name System]]: 
   Translates domain names to IP addresses
-- [[(DHCP) Dynamic Host Configuration Protocol]]:
+- [[(DHCPv4) Dynamic Host Configuration Protocol]]:
    dynamically assigns IP addressing information to clients at start up and re-uses them when no longer needed
 - (SLAAC) Stateless Address Autoconfiguration:
   allows a device to obtain IPv6 addressing information without using a DHCPv6 server

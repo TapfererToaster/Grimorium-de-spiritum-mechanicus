@@ -1,3 +1,4 @@
+#CCNA 
 *VLANs* provide segmentation and organizational flexibility in a switched network and are based on logical connections instead of physical connections.
 They allow admins to separate the network based on factors such as team or application.
 Benefits of VLANs are:

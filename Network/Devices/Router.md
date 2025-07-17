@@ -2,7 +2,7 @@
 #CCNA 
 # Router as Gateways
 A router provides a gateway through which hosts on the local network can access the internet or other networks. 
-In order for a host to access the gateway it must now the IP address of the router interface facing the local network, known as the *default gateway address*. This address can be obtained by either being statically assigned by a network administrator or automatically by using the [[(DHCP) Dynamic Host Configuration Protocol]].
+In order for a host to access the gateway it must now the IP address of the router interface facing the local network, known as the *default gateway address*. This address can be obtained by either being statically assigned by a network administrator or automatically by using the [[(DHCPv4) Dynamic Host Configuration Protocol]].
 >[!note]
 >As a router is the gateway to remote networks it also functions as a boundary between networks
 # Routing

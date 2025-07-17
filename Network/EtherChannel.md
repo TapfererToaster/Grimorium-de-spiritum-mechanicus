@@ -47,7 +47,7 @@ EtherChannels can be formed through negotiation using one of two protocols:
 >[!note]
 >The modes must be compatible on each side.
 >If one side is configured to auto mode, it waits for the other side to initiate the EtherChannel negotiation. If the other side is also set to auto, the negotiation never starts.
->![[Pasted image 20250704085611.png]]
+>![[PAgP EtherChannel.png]]
 
 ## Link Aggregation Control Protocol (LACP)
 - part of IEEE 802.3ad allowing several physical ports to be bundled to form a single logical channel
@@ -63,7 +63,7 @@ EtherChannels can be formed through negotiation using one of two protocols:
 
 >[!note]
 >The modes must be compatible for a EtherChannel to form.
->![[Pasted image 20250704094021.png]]
+>![[LACP EtherChannel.png]]
 
 # LACP Configuration 
 >[!warning] Guidlines and Restrictions

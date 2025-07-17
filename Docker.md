@@ -606,3 +606,191 @@ root@b83048106b0f:/#
 You can now run any command that might determine what is causing the build to fail. 
 
 ### Debugging BuildKit Images
+One approach is to leverage multistage builds and the `--target` argument of docker image build.
+We begin by modifying the Dockerfile:
+- Change `FROM docker.io/node:18.13.0` to `FROM docker.io/node:18.13.0 as deploy`
+- Before the line that causes the error we add: `FROM deploy`
+
+With this we created a multistage build, where the first stage contains all the working steps and the second stage start with the problematic stage.
+
+We now tell Docker to only build the first image:
+```
+$ docker image build -t example/docker-node-hello:debug --target deploy .
+```
+
+We can now create a container from this image and explore the problem. Once we identified the error we can revert our debugging changes and fix the error. 
+
+## Multiarchitecture Builds
+AMD64/X86_64 architecture has been the primary platform that most containers have targeted, but the use of ARM64/AArch64 systems and ARM-based VMs has been rising.
+
+The `buildx` plug-in helps with building and maintaining multi architectures images.
+>[!tip]
+>It should be installed by default, you can check with the command `docker buildx version`
+
+`docker-buildx` leverages [QEMU-based virtualization](https://www.qemu.org/) and [binfmt_misc](https://docs.kernel.org/admin-guide/binfmt-misc.html) to support architectures that differ from the underlying system.
+To ensure that that the QEMU files are properly registered and up to date use:
+```
+$ docker container run --rm --privileged multiarch/qemu-user-static \
+	--reset -p yes
+```
+
+> [!NOTE]
+> BuildKit can utilize a build container instead of running directly on the server when building images, which means there is a lot of functional flexibility.
+
+To build a default buildx container:
+```
+$ docker buildx create --name builder --driver docker-container --use builder
+$ docker buildx inspect --bootstrap
+```
+Now let's download the wordchain Git repository, which can generate random and deterministic word sequences.
+```
+$ git clone https://github.com/spkane/wordchain.git
+$cd wordchain
+```
+
+Now we can build the image and side-load it into our local Docker server:
+```
+$ docker buildx --tag wordchain:test --load . 
+```
+
+Test the image with the following commands:
+
+```
+$ docker container run wordchain:test random#
+$ docker container run wordchain:test random -l 3 -d . 
+$ docker container run wordchain:test --help
+```
+
+You can build this image for both linux/amd6 and linux /arm64:
+```
+$ docker buildx build--platform linux/amd64,linux/arm64 \
+	--tag wordchain:test .
+```
+
+The information which image to use for the local platform when we upload the image to a repository, is stored in the *image manifest*. 
+You can look at the image manifest with
+```
+$ docker manifest inspect docker.io/spkane/wordchain:latest
+```
+
+In it there are individual digest entries paired with a platform block, which identify the image that is required for every platform the image supports. The manifest is downloaded by the server when it requires a image and references it to download the correct image.
+
+# Working with Containers
+>[!note] What are Containers?
+>A container is a self-contained execution environment that shares the kernel of the host system and is (optionally) isolated from other containers in the system.
+
+## Creating a Container
+>[!note]
+>The command `docker container run` is a shortcut to execute two steps at once.
+>- Create a container from an underlying image, which can be done with `docker container create`
+>- Execute a container, which can be done with `docker container start`
+>
+>With the `docker container run` command you can map network ports in the underlying container to the host using `-p/--publish` argument and can pass environment variables into the container using `-e/--env` argument.
+
+### Basic Configuration
+>[!note]
+>A container is build from the underlying image, but various command-line arguments can affect the final settings. Settings specified in the Dockerfile are used as defaults, but can be overwritten.
+#### Container Name
+By default Docker will randomly generate a name by combining an adjective with the name of a famous person, but if you want to give your container a specific name you can use the `--name` argument.
+```
+$ docker container create --name="awesome-service" ubuntu:latest sleep 120
+```
+#### Labels
+Labels are key/value pairs that can be applied to Docker images and containers as metadata. When a new Linux containers are created, they automatically inherit all the labels from their parent image.
+You can add new labels to the container to apply metadata that is specific to that single container.
+```
+$ docker container run --rm -d --name has-some-labels \
+	-l deployer=Ahmed -l tester=Asako \
+	ubuntu:latest sleep 1000
+```
+
+To inspect the labels a container has use 
+```
+$ docker container insoect has-some-labels
+```
+
+>[!tip] Search and filter metadata
+>You can search for and filter containers based on its metadata, using `container ls`
+>```
+>$ docker container ls -a -f label=deployer=Ahmed
+>```
+
+#### Hostname
+When starting a container, Docker copies `/etc/hostname` from the system files on the host into the container's configuration directory and uses a bind mount to link the copy of the file into the container. 
+>[!note]
+>When you see a prompt similar to `root@hashID`, you are running a command within the container instead of on the local host.
+
+To set the hostname, we can use the `--hostname` argument
+```
+$ docker container run --rm -ti --hostname="mycontainer.example.com" \
+	ubuntu:latest /bin/bash
+```
+#### Domain Name Service
+The `resolv.conf` file configures Domain Name Service (DNS) resolution is managed via a bind mount between the host and container. 
+To change it you can use the `--dns` and `--dns-search` argument.
+```
+$ docker container run --rm -ti --dns=8.8.8.8 --dns=8.8.4.4 \
+	--dns-search=example1.com --dns-search=example2.com \
+	ubuntu:latest /bin/bash
+```
+#### MAC address
+Without any configuration, a container will receive a calculated mac address that starts with `02:42:ac:11` as prefix.
+To set a MAC address use:
+```
+$ docker container run --rm -ti --mac-address="a2:11:aa:22:bb:33"
+```
+>[!note]
+>When customizing MAC addresses it is possible to cause a ARP contention, when two systems advertise the same MAC address.
+
+### Storage Volumes
+When the default disk space allocated to a container is not appropriate for a job you need  storage that can persist between container deployments.
+For this you can use the `--mount/-v` command to mount directories and individual files from the host server into the container. 
+
+>[!note]
+>It is important that you use fully qualified paths
+
+```
+$ docker container run --rm -ti \
+	--mount type=bind,target=/mnt/session_data,source=/data \
+	ubuntu:latest /bin/bash
+```
+
+Neither the host mount point nor the mount point in the container needs to preexist for this command to work properly. If the host mount point does not exist already, then it will be created as a directory, which could cause issues when pointing to a file of a directory.
+
+>[!note]
+>If the application is designed to write into `/data`, this data will be visible on the host file system in `/mnt/session_data` and will remain available when this container stops and a new container starts with the same volume mounted.
+>
+
+It is possible that the root volume of your container should be mounted read-only so that processes within the container cannot write anything to the root filesystem. This prevents things like logfiles, which a developer may be unaware of from filling up the container's allocated disk in production. When used with a mounted volume, you can ensure that data is written only into expected locations.
+
+You can do this with the `--read-only=true` command
+```
+$ docker container run --rm -ti --read-only=true -v /mnt/session_data:/data \
+	ubuntu:latest /bin/bash
+```
+
+### Resource Quotas
+>[!note]
+>Constraints are normally applied at the time of container creation. If you need to change them you can use the `docker container update` or deploy a new container.
+>You also must have the resource limit capabilities enabled in your kernel.
+#### CPU shares
+When using Docker, you must leverage the `cgroup` functionality in the Linux kernel to control the resources that are available to a Linux container
+The computing power of all CPU cores in a system is the full pool of shares. Docker assigns the number 1024 to represent the full pool and you can dictate how much time a container gets to use the CPU.
+
+To set the CPU share use the `--cpu-shares` command.
+```
+$ docker container run --rm -ti --cpu-shares 512 spkane/train-os \
+	stress -v --cpu 2 --io 1 --vm 2 --vm-bytes 128M --timeout 120s
+```
+#### CPU pinning
+It is possible to pin a container to one or more CPU cores, which means  that work for this container will be scheduled only on the cores that have been assigned to this container.
+Use the `--cpuset-cpus` argument
+```
+$ docker container run --rm -ti \
+	--cpu-shares 512 --cpuset-cpus=0 spkane/train-os \
+	stress -v --cpu 2 --io 1 --vm 2 --vm-bytes 128M --timeout 120s
+```
+>[!note]
+>The `--cpuset-cpus` argument is zero-indexed, so the first CPU core is 0. If you the given CPU core does not exist on the host system, you will get a `Cannot start container` error.
+
+#### Simplifying CPU quotas
