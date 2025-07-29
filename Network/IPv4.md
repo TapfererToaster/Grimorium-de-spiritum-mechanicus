@@ -200,8 +200,6 @@ The final field of the IPv4 header is the *Option field*. This field is optional
 - **Source IPv4 Address** - This contains a 32-bit binary value that represents the source IPv4 address of the packet. The source IPv4 address is always a unicast address.
 - **Destination IPv4 Address** - This contains a 32-bit binary value that represents the destination IPv4 address of the packet. The destination IPv4 address is a unicast, multicast, or broadcast address.
 
-# Subnetting
-
 # IPv4 Network Attributes
 ## Network Address
 - used to identify the network
@@ -228,5 +226,88 @@ The final field of the IPv4 header is the *Option field*. This field is optional
 > $2^{x}-2$
 >, with x being the number of Hostsbits.  
 
+# Subnetting
+*Subnetting* is a method of dividing an IP address block into multiple smaller *subnets (subdivided networks)* by assigning bits from the host portion to the network portion of the network address.
+
+## Fixed-Length Subnet Masking (FLSM)
+![[Fixed-Length Subnet Masking.png]]
+*Fixed-Length Subnet Masking (FLSM)* divides a address block into multiple subnets of equal size.
+
+![[Subnet 24bit FLSM.png]]
+You are given the address block `192.168.1.0/24` and have to subnet it. To do this you can add a bit from the host portion to the network portion and increase the netmask from `/24` to `/25`. With that you created two subnets:
+- 192.168.1.0 /25: 192.168.1.1 - 192.168.1.127
+- 192.168.1.128 /25: 192.168.1.129 - 192.168.1.255
 
 
+![[FLSM four subnets.png]]
+You could also divide the  `192.168.1.0/24` address block into four subnets.
+- 192.168.1.0 /26: 192.168.1.1 - 192.168.1.63
+- 192.168.1.64 /26: 192.168.1.65 - 192.168.1. 127
+- 192.168.1.128 /26: 192.168.1.129 - 192.168.1.191
+- 192.168.1.192 /26: 192.168.1.193 - 192.168.1.255
+
+### Exam Scenario
+![[FLSM Exam.png]]
+You are given this network topology and the following tasks:
+1. Subnet the 172.25.190.0 /23 address block into equal subnets
+2. Identify the subnets and give the number of hosts
+3. Configure the first usable address of each subnet on R1's interfaces
+
+We first borrow 2 bits from the host portion and create the four subnets:
+ ![[FLSM Exam subnets.png]]
+
+The subnets are:
+- 172.25.190.0 /25: 172.25.190.1 - 172.25.190.127
+- 172.25.190.128 /25: 172.25.190.129 -172.25.190.255
+- 172.25.191.0 /25: 172.25.191.1 - 172.25.191.127
+- 172.25.191.128 /25: 172.25.191.129 - 172.25.191.255
+
+The number of hosts for each subnet is 126 ($2^x -2$ as 1 address is used for the router and 1 is used as the broadcast address)
+
+Now we configure the interfaces of R1:
+```
+R1(config)# interface g0/0
+R1(config-if)# ip address 172.25.190.2 255.255.255.128
+R1(config-if)# interface g0/1
+R1(config-if)# ip address 172.25.190.129 255.255.255.128
+R1(config-if)# interface g0/2
+R1(config-if)# ip address 172.25.191.1 255.255.255.128
+R1(config-if)# interface g0/3
+R1(config-if)# ip address 172.25.191.129 255.255.255.128
+```
+
+## Variable-Length Subnet Masking (VLSM)
+*Variable-Length Subnet Masking (VLSM)*  divides a address block into multiple subnets of variable size.
+![[VLSM.png]]
+![[VLSM Network.png]]
+
+The order in which the subnets should be assigned is: 
+1. Assign the largest sunnet at the start of the address block
+2. Assign the second-largest subnet after it
+3. Repeat the process until all subnets have been assigned
+
+### Assigning Toronto LAN A's Subnet
+Toronta LAN A requires 122 host addresses. To determine the number of host bits that are needed we can use $2^y -2$ and figure out that 7 bits are needed ($2^7-2=126$). 
+We add 1 bit to the network portion, which leaves 7 host bits and we get the subnet `10.89.100.0 /25`
+![[VLSM Toronto LAN.png]]
+### Assigning Tokyo LAN A's Subnet
+Now we have to identify the address block of Tokyo LAN A. We already know that the network address is `10.89.100.128`, as the last IP address of Toronto LAN A is `10.89.100.127`. 
+To determine how many host bits are needed to accommodate for Tokyo LAN A's 59 required hosts. We can again use $2^y -2$ and to determine that 6 bits are required ($2^6-2=62$).
+We again add 1 bit to the network portion and increase the netmask to `/26`.
+
+![[VLSM Tokyo LAN A.png]]
+### Assigning Toronto LAN B and Tokyo LAN B
+We again check how many host bits are needed to accommodation for the LANs requirements and set borrow the bits accordingly.
+Toronto LAN B:
+![[VLSM Toronto LAN B.png]]
+
+Tokyo LAN B:
+![[Tokyo LAN B.png]]
+### Assigning the WAN
+The WAN connection between R1 and R2 is a point-to-point connection, requiring only 2 host addresses. 
+For these P2P connection there are 2 options:
+- a `/30` bit prefix (two usable addresses four addresses in total)
+- a `/31` bit prefix (only 2 addresses)
+
+Both options are valid.
+![[VLSM WAN.png]]

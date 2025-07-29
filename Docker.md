@@ -794,3 +794,91 @@ $ docker container run --rm -ti \
 >The `--cpuset-cpus` argument is zero-indexed, so the first CPU core is 0. If you the given CPU core does not exist on the host system, you will get a `Cannot start container` error.
 
 #### Simplifying CPU quotas
+A simpler way to set the CPU shares is with the use pf the `--cpu` command, where you can set a floating point number between 0.01 and the number of CPU cores on the Docker server.
+```
+$ docker container run --rm -ti --cpus=".25" spkane/train-os \
+	stress -v --cpu 2 --io 1 --vm 2 --vm-bytes 128 --timeout 60s
+```
+
+You can also use the `update` command to adjust the share of one or more containers:
+```
+$ docker container update --cpus="1.5" 092c5dc85044 92b797f12af1
+```
+#### Memory
+We can also control how much memory a container can access with the `--memory` command and specifying the amount of memory with:
+- `b`: bytes
+- `k`: kilobytes
+- `m`: megabytes
+- `g`: gigabytes
+
+```
+$ docker container run --rm -ti --memory 512m spkane/train-os \
+	stress -v --cpu 2 --io 1 --vm 2 --vm-bytes 128m --timeout 10s
+```
+Here we assigned 512 MB of RAM and 512 MB of additional swap space.
+
+To set the swap separately or disable it use the `--memory-swap` option and indicate the amount by assigning the swap space in addition with the memory space 
+```
+$ docker container run --rm -ti --memory 512m --memory-swap=768m \
+	spkane/train-os stress -v --cpu 2 --io 1 --vm 2 --vm-bytes 128m \
+	--timeout 10s
+```
+Here we assign 512 MB of RAM and 256 MB of additional swap space (512+256=768).
+Setting `--memory-swap = -1` allows the container to use as much swap as is available on the underlying system.
+#### Block I/O
+There are a few ways to limit block I/O via the cgroups mechanism.
+The first way is to adjust the setting of the `blkio.weight` cgroup attribute, by passing the `--blkio-weight` to the `docker container run` command or target a specific device with `--blkio-weight-device` and assigning a valid value.
+The possible values are 0 (disabled) or a number between 10 and 1000, the default being 500. This will divide the available I/O between every process.
+
+It is easier to limit the maximum numbers of bytes or operations per second that are available to a container. 
+This can be set with the following commands:
+- `--device-read-bps`: limit read rate (bytes per second) from a device
+- `--device-read-iops`: limit read rate (IO per second) from a device
+- `--device-write-bps`: limit write rate (bytes per second) to a device
+- `--device-write-iops`: limit write rate (IO per second) to a device
+
+#### ulimits
+You can set soft and hard limits on the resources with the `ulimit` command.
+To list the resources you can adjust use the command:
+```
+$ ulmit -a
+core file size (blocks, -c) 0 
+data seg size (kbytes, -d) unlimited 
+scheduling priority (-e) 0 
+file size (blocks, -f) unlimited 
+pending signals (-i) 5835 
+max locked memory (kbytes, -l) 64 
+max memory size (kbytes, -m) unlimited 
+open files (-n) 1024 
+pipe size (512 bytes, -p) 8 
+POSIX message queues (bytes, -q) 819200 
+real-time priority (-r) 0 
+stack size (kbytes, -s) 10240 
+cpu time (seconds, -t) unlimited 
+max user processes (-u) 1024 
+virtual memory (kbytes, -v) unlimited 
+file locks (-x) unlimited
+```
+
+To configure the Docker daemon with a default user limit with a soft limit of 50 open files and a hard limit of 150 open files use: 
+```
+$ sudo dockerd --default-ulimit nofile=50
+```
+
+## Starting a Container
+
+With `docker container create` we created/ configured a container, but it is not running. To start a container use `docker container start container-hash`.
+
+As an example we run Redis, a key/value store.
+```
+$ docker container create -p 6379:6379 redis:7.0
+Unable to find image 'redis:7.0' locally 7.0: Pulling from library/redis 3f4ca61aafcd: Pull complete 
+… 
+20bf15ad3c24: Pull complete Digest: sha256:8184cfe57f205ab34c62bd0e9552dffeb885d2a7f82ce4295c0df344cb6f0007 Status: Downloaded newer image for redis:7.0 092c5dc850446324e4387485df7b76258fdf9ed0aedcd53a37299d35fc67a042
+```
+
+The last line is the container hash, but you do not need to enter the full hash to start a container, rather just enough of it to distinguish it from other containers (often the first 12 characters).
+
+## Auto-Restarting a Container
+
+

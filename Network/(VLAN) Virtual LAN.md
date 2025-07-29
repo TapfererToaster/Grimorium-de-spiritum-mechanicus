@@ -30,7 +30,20 @@ Important:
 Data VLANs are configured to separate user-generated traffic into groups of users or devices.
 Voice and management traffic should not be permitted on data VLANs.
 ## Native VLAN
+>[!note] Remember
+>Access Ports (untagged ports) send and receive frames without 802.1Q tags
+>Trunk Ports (tagged ports) send and receive frames with 802.1Q tags to indicate which VLAN each frame belongs to.
 
+Untagged traffic that is received on a trunk port (tagged port) is assigned to the *native VLAN* and is forwarded without a tag by that trunk port. 
+
+This was developed to accommodate for devices that do not support 802.1Q tagging such as hubs, but since hubs have become obsolete there is no need for the Native VLAN anymore and it can make a network vulnerable to security exploits.
+
+>[!note] Disabling the Native VLAN
+>The Native VLAN can not be disabled, so an unused VLAN (that is not VLAN 1) should be assigned as the Native VLAN on trunk ports.
+### Native VLAN Mismatch
+When the ports on each end of a link have different native VLANs configured, a mismatch occurs and frames might not reach their destination.
+![[Native VLAN Mismatch.png]]
+In this Example the frame sent from PC1 to PC10 will be forwarded untagged as VLAN10 is configured as the native VLAN on `SW1 G0/0` port. When port `SW2 G0/0` receives the untagged frame it assigns it to its native VLAN, VLAN 30. This results that SW2 cannot forward the frame to PC2 as it is in VLAN10.
 ## Management VLAN
 This is a data VLAN configured specifically for network management traffic including SSH, Telnet, HTTPS, HTTP and SNMP.
 By default VLAN 1 is configured as the management VLAN on a Layer 2 switch.
@@ -51,16 +64,19 @@ To meet these requirements the entire network has to be designed to support VoIP
 >A trunk is a point-to-point link between two network devices that carries more than one VLAN.
 
 # VLAN Tagging
-The standard [[Ethernet#Frames|Ethernet frame header]] does not contain information about the VLAN to which the frame belongs. To add these information the IEEE 802.1Q header is used in a process called *tagging*. This header includes a 4-byte tag inserted into the original Ethernet frame, specifying the VLAN.
+The standard [[Ethernet#Frames|Ethernet frame header]] does not contain information about the VLAN to which the frame belongs. To add these information the IEEE 802.1Q header is used in a process called *tagging*. This header includes a 4-byte tag inserted into the original Ethernet frame between the Source and EtherType field, specifying the VLAN.
 ## VLAN tag fields
-
 ![[VLAN tag fields.png]]
 
 The fields of the VLAN tag are the following
-- **Type**: 2 byte value called *tag protocol ID (TPID)*. For Ethernet it is set to hex 0x8100
-- **User priority**: 3 bit value that supports level or service implementation.
-- **Canonical Format Identifier (CFI)**: 1 bit identifier that enables Token Ring frames to be carried across Ethernet links
-- **VLAN ID (VID)**: 12 bit VLAN identification number that supports up to 4096 VLAN IDs
+- *Tag Protocol ID (TPID)*: 2 byte long and contains the value 0x8100, indicates that the frame is 802.1Q tagged
+- *Tag Control Information (TCI)*
+	- Priority Code Point: 3 bits in length and is used for Quality of Service by markinng frames as higher or lower priority
+	- Drop Eligible Indicator: 1 bit long and indicates frames that can be dropped if the network is congested
+	  >[!note]
+	  > Previously known as **Canonical Format Identifier (CFI)** which was used to enable Token Ring frames to be carried across Ethernet links
+
+	- VLAN Identifier (VID): 12 bit long and indicates which VLAN the frame is in, suppurts up to 4096 VLAN IDs
 
 >[!note]
 >After the header is inserted the FCS is recalculated.
@@ -218,8 +234,18 @@ S1(config-if)# switchport trunk allowed vlan 10,20,30,99
 S1(config-if)# end
 ```
 
+>[!note] Modifying the list of allowed VLANs
+>There are some options to the `switchport trunk allowed vlan vlan-id` command:
+>- `add`: add VLANs to the current list
+>  `SW1(config-if)# switchport trunk allowed vlan add 1` 
+>- `all`: all VLANs are allowed
+>- `except`: all VLANs except the following
+>  `SW1(config-if)# switchport trunk allowed vlan except 1-9,11-19,21-29,31-4094`
+>- `none`: no VLANs
+>- `remove`: remove VLANs from the current list
+
 ## Verify Trunk Configuration
-To verify the Trunk configuration use `show interface interface-id switchport`
+To verify the Trunk configuration use `show interface interface-id switchport` or `show interfaces trunk`
 
 ## Reset the Trunk to the Default State
 To remove the allowed VLANs and reset the native VLAN of the trunk use the commands `no switchport trunk allowed vlan` and `no switchport trunk native vlan`
@@ -281,6 +307,28 @@ To verify the DTP mode use `show dtp interface interface-id`.
 >[!note]
 >A general best practice is to set the interface to `trunk` and `nonegotiate` when a trunk link is required. On links where trunking is not intended, DTP should be turned off.
 
+## Disabling DTP
+DTP is a security vulnerability as an attacker can exploit it to form a trunk link to a switch and gaining access to the VLANs in a LAN. 
+Although end host do not use DTP messages a malicious user can use tools like [Yersinia](https://www.kali.org/tools/yersinia/) to send DTP messages.
+![[DTP Yersinia Hack.png]]
+
+To prevent this you can either:
+- Manually configure the port an an access port with `switchport mode access`
+- Explicitly disable DTP with `switchport nonnegotiate`
+
+>[!note]
+>It is a security best practice to use `switchport nonegotiate` to disable DTP on switch ports, even if you configure the port in trunk mode.
+
+# VLAN Trunking Protocol (VTP)
+The *VLAN Trunking Protocol (VTP)* is another Cisco-proprietary protocol enables switches to synchronize their VLAN databases, the file in that stores information about existing VLANs. This is important as switches will drop packets from VLANs they do not know.
+![[VLAN Trunking Protocol.png]]
+
+>[!note] 
+>The VLAN database is stored is stored in the `vlan.dat` file, which can be viewed with the `dir flash:` or `show flash:` commands.
+
+## VTP synchronization
+
+
 # Inter-VLAN Routing
 Hosts in one VLAN cannot communicate with hosts in other VLANs, unless there is a router or a Layer 3 switch.
 *Inter-VLAN routing* is the process of forwarding network traffic from one VLAN to another VLAN.
@@ -292,7 +340,7 @@ A legacy method of inter VLAN routing was using a Router and connecting it with 
  ![[Router on a Stick.png]]
  The *router on a stick* method only needs one Ethernet port, which is configured as an 802.1Q trunk and connected to a trunk port on a Layer 2 switch.
 ### Subinterfaces 
-This method requires the creation of *subinterfaces* for each VLAN to be routed.
+This method requires the creation of *subinterfaces*, which send and receive tagged frames, for each VLAN to be routed.
 To create a subinterface use `interface interface-id.subinterface-id`.
 After that you configure the subinterface to respond to 802.1Q encapsulated traffic from a specified VLAN with `encapsulation dot1q vlan-id [native]`. The `native` keyword is used to set the native VLAN to something other than VLAN 1.
 You also have to set a IP address to the subinterface, which will serve as a default gateway.
@@ -300,9 +348,15 @@ You also have to set a IP address to the subinterface, which will serve as a def
 **Example**
 #Cisco_CLI 
 ```
+# R1(config)# interface g0/0 
+# R1(config-if)# no shutdown
+
 R1(config)# interface G0/0/1.10
 R1(config-subif)# description Default Gateway for VLAN 10
+
+# set the VLAN associated with the subinterface
 R1(config-subif)# encapsulation dot1Q 10
+
 R1(config-subif)# ip add 192.168.10.1 255.255.255.0
 R1(config-subif)# exit
 ```
@@ -359,13 +413,13 @@ D1(config-if)# exit
 D1(config)# ip routing
 ```
 
-## Routing
+### Routing
 ![[Layer 3 Switch Routing.png]]
-If VLANs are to be reachable by other Layer 3 devices, they mus be advertised using static or dynamic routing. To enable routing on a Layer 3 switch, a routed port must be configured.
+If VLANs are to be reachable by other Layer 3 devices, they mus be advertised using static or dynamic routing. To enable routing on a Layer 3 switch, a *routed port* must be configured.
 
 A routed port (G0/0/1) is created by disabling the switchport feature on a Layer 2 port with `no switchport`, which converts it into a Layer 3 interface.
 
-### Configuration
+#### Configuration
 #Cisco_CLI 
 1. Configure the routed port
 ```
