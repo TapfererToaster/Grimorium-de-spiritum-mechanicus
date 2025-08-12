@@ -26,7 +26,7 @@ In home networks and small businesses wireless router are used and is both DHCP 
 2. **DHCP Offer (DHCPOFFER)**
    When the DHCPv4 server receives a DHCPDISCOVER message, it reserves an available IPv4 address to lease to the client. The server also creates an ARP entry consisting of the MAC address of the requesting client and the leased IPv4 address of the client. The DHCPv4 server sends the DHCPOFFER message to the requesting client.
 3. **DHCP Request (DHCPREQUEST)**
-   When the client receives the DHCPOFFER from the server, it sends back a DHCPREQUEST, informing the server (and other DHCP server) about accepting the offer.
+   When the client receives the DHCPOFFER from the server, it sends back a broadcast DHCPREQUEST, informing the server (and other DHCP server) about accepting the offer.
 4. **DHCP Acknowledgement (DHCPACK)**
    When receiving the DHCPREQUEST the server may verify the lease information with an ICMP ping to the assigned address and create a new ARP entry.
 

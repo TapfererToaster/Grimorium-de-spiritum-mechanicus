@@ -138,4 +138,30 @@ nmap -sS 192.168.0.1 -oN scanFile
 ```
 ## Summary
 ![[Nmap scan summery.png]]
+- *TCP FIN Scan (-sF)*:
+  SYN scans can be noticed by a firewall, that is when you should use a FIN scan
+  `-sF -p ports ip-address`
+- *-sC*
+  With this command runs the most common NSE scripts based on the open ports with which you can get information about the system, f.e. what OS is running on the target
+  `nmap -sC ip-address`
+# Enummerating SMB
 
+## User enumeration
+```
+nmap --script smb-enum-users.nse ip-address
+```
+## Group Enumeration
+```
+nmap --script smb-enum-group-nse -p445 host
+```
+- You can search what groups a user is part of 
+```
+# nmap --script smb-enum-groups.nse --script-args smbusername=vagrant,smbpass=vagrant 192.168.56.3
+```
+## Network Share Enumeration
+Identify systems that share files, folders, printers and more. The `smb-enum-shares` NSE script uses Microsoft Remote Procedure Call (MSRPC).
+```
+nmap --script smb-enum-shares.nse -p 445 host-ip
+
+# nmap --script smb-enum-shares.nse -p 445 192.168.88.251
+```

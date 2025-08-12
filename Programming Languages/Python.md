@@ -1,4 +1,6 @@
-
+- https://docs.python.org/3/tutorial/
+- http://getpython3.com/diveintopython3/index.html
+- https://scapy.readthedocs.io/en/latest/introduction.html
 # Literals
 # Integers
 # Input() Function

@@ -1,3 +1,4 @@
+#CCNA 
 # The need for IPv6
 IPv6 is designed as a successor to IPv4, because IPv4 does not have enough addresses. This shortage is because the IPv4 has 4.3 billion possible addresses, but there are a lot more devices than that. The use of private addresses and *Network Address Translation (NAT)* slowed down the depletion, but it also created its own problems. 
 With the rise of IoT the need for more addresses became clearer, which IPv6 with its 128-bits and 340 undecillion (10^36) possible addresses could provide.

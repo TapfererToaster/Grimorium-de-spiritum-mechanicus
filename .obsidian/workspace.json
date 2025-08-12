@@ -20,49 +20,21 @@
             }
           },
           {
-            "id": "3eb18a2f67d7dcad",
+            "id": "4b5fdead21194dd1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Network/EtherChannel.md",
+                "file": "Network/LAN Security Concepts.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "EtherChannel"
-            }
-          },
-          {
-            "id": "eccedb658dfeb878",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Network/(VLAN) Virtual LAN.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "(VLAN) Virtual LAN"
-            }
-          },
-          {
-            "id": "b43786cd79d92730",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Linux.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Linux"
+              "title": "LAN Security Concepts"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -94,7 +66,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "VTP",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -136,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Network/Protocols/(DHCP) Dynamic Host Configuration Protocol.md",
+                "file": "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -146,7 +118,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for (DHCP) Dynamic Host Configuration Protocol"
+              "title": "Backlinks for Reconnaissance and Vulnerability Scanning"
             }
           },
           {
@@ -184,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Programming Languages/Go.md",
+                "file": "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Go"
+              "title": "Outline of Reconnaissance and Vulnerability Scanning"
             }
           }
         ],
@@ -212,53 +184,53 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "b43786cd79d92730",
+  "active": "4b5fdead21194dd1",
   "lastOpenFiles": [
-    "Bilder/Linux",
-    "Bilder/Linux/Permissions.png",
+    "Bilder/LAN Security Concepts/IEEE 802.1X.png",
     "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
-    "Pasted Image 20250729133622_474.png",
+    "Pasted Image 20250812143012_731.png",
+    "Network/LAN Security Concepts.md",
+    "Bilder/LAN Security Concepts/Endpoint Security.png",
+    "Bilder/LAN Security Concepts/desktop.ini",
+    "Bilder/LAN Security Concepts",
+    "bilder/LAN Security Concepts",
+    "bilder/LAN Security Concepts/Endpoint Security.png",
+    "Pasted Image 20250812111544_159.png",
+    "Pasted image 20250812111534.png",
+    "Network/Protocols/(FHRP) First Hop Redundancy Protocol.md",
+    "Network/Protocols/(DHCPv4) Dynamic Host Configuration Protocol.md",
+    "dhcp.md",
+    "Network/Protocols/(STP) Spanning Tree Protocol.md",
+    "Network/IPv6.md",
     "Linux.md",
-    "Pasted image 20250729133554.png",
-    "Pasted Image 20250729133550_212.png",
+    "Network/(VLAN) Virtual LAN.md",
+    "Network/(OSI) Open Systems Interconnection-Modell.md",
+    "Bilder/FHRP/Forwarding router fails.png",
+    "Pasted Image 20250811142946_249.png",
+    "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
+    "Pasted image 20250811142937.png",
+    "Bilder/FHRP",
+    "Bilder/FHRP/Virtual Router.png",
+    "Pasted Image 20250811142235_896.png",
+    "Network/Protocols/(DHCPv6).md",
+    "Network/EtherChannel.md",
+    "Network/IPv4.md",
+    "VLSM Tokyo LAN A.png.md",
+    "Programming Languages/Python.md",
+    "H4CX0R/Nmap.md",
+    "Bilder/Reconnaisance",
+    "shodan.io.md",
+    "H4CX0R/Untitled",
+    "Bilder/Linux",
     "Programming Languages/Go.md",
     "Docker.md",
-    "Network/EtherChannel.md",
-    "Network/(VLAN) Virtual LAN.md",
-    "Bilder/VLAN/VLAN Trunking Protocol.png",
-    "Pasted Image 20250724141332_947.png",
-    "Pasted image 20250724141312.png",
-    "Bilder/VLAN/DTP Yersinia Hack.png",
-    "Bilder/VLAN/Native VLAN Mismatch.png",
-    "Pasted Image 20250723111137_839.png",
-    "Network/IPv4.md",
     "Network/Routing.md",
     "Virtualization.md",
     "README.md",
     "Bilder/Routing",
-    "Network/Protocols/(DHCPv6).md",
     "Vlan.md",
     "Bilder/DHCPv6",
-    "Network/Protocols/(DHCPv4) Dynamic Host Configuration Protocol.md",
-    "Network/IPv6.md",
     "Network/Ethernet.md",
-    "ether.md",
-    "Email.md",
-    "Network/Protocols/(Telnet) Teletype Network.md",
-    "Bilder/Etherchannel/desktop.ini",
-    "Bilder/Etherchannel",
-    "Network/Protocols/(STP) Spanning Tree Protocol.md",
-    "Network/Untitled.md",
-    "Bilder/STP",
-    "Cables, Connectors and Ports.md",
-    "Network/Devices/Switches.md",
-    "VLAN Troubleshooting Scenario.png.md",
-    "Network/Devices/Router.md",
-    "Network/TCP-IP Modell.md",
-    "Bilder/VLAN",
-    "Network/Devices",
-    "Bilder/Cryptography",
-    "bilder/Cryptography",
-    "Bilder/UDP"
+    "Bilder/Etherchannel/desktop.ini"
   ]
 }

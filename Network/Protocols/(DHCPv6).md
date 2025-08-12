@@ -13,7 +13,7 @@ The stateless DHCPv6 server is only providing information that is identical for 
 
 ## Enable Stateless DHCPv6 on an Interface
 #Cisco_CLI 
-Stateless HCP is enabled on a router interface using the `ipv6 nd other-config-flag` 
+Stateless DHCP is enabled on a router interface using the `ipv6 nd other-config-flag` 
 ```
 R1(config-if)# ipv6 nd other-config-flag
 ```
@@ -155,7 +155,10 @@ R1(config-if)# ipv6 dhcp relay destination 2001:db8:acad:1::2 G0/0/0
 R1(config-if)# exit
 ```
 
-### Verify the DHCP
-- ![[Relay Agent show interfaces.png]]
-- ![[Relay Agent show binding.png]]
-- 
+### Verify the DHCPv6 Relay Agent
+- This command will verify that the interface is in relay mode
+ ![[Relay Agent show interfaces.png]]
+- This command is used to verify if any hosts have been assigned an IPv6 configuration
+  ![[Relay Agent show binding.png]]
+- This command is used on the client PCs to verify that it has received an IPV6 configuration from the DHCPv6 server
+  ![[Relay Agent ipconfig all.png]]
