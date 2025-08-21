@@ -451,3 +451,4 @@ By default the switch can be managed through VLAN1, but also all ports are assig
 - **Step 3**: Verify Configuration
 	- `S1# show ip interface brief`
 	- `S1# show ipv6 interface brief`
+# Security Configuration

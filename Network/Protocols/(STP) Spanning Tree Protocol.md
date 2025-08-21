@@ -2,6 +2,7 @@
 The *Spanning Tree Protocol (STP)* is a loop-preventing protocol that allows for redundancy in a Layer 2 topology. 
 >[!note]
 >Unlike Layer 3 protocols (IPv4, IPv6), Layer 2 Ethernet has no mechanism to recognize and eliminate endlessly looping frames.
+>Looping frames can also cause *MAC address flapping*m, which is when a switch learns the same MAC address on multiple ports.
 
 - IEEE 802.D is the original IEEE MAC Bridging standard for STP.
 - When a redundant link fails STP recalculates the best link

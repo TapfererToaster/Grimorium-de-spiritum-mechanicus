@@ -273,6 +273,7 @@ If the ports connecting two switches are configured to ignore all DTP advertisem
 >[!tip]
 >When configuring a port to be in trunk mode, use the `switchport mode trunk` command. Then there is no ambiguity about which state the trunk is in; it is always on.
 
+
 ## Negotiated Interface Modes
 The `switchport mode` command has additional options for negotiating the interface mode.
 ```
@@ -307,7 +308,7 @@ To verify the DTP mode use `show dtp interface interface-id`.
 >[!note]
 >A general best practice is to set the interface to `trunk` and `nonegotiate` when a trunk link is required. On links where trunking is not intended, DTP should be turned off.
 
-## Disabling DTP
+## DTP as a Vulnerability
 DTP is a security vulnerability as an attacker can exploit it to form a trunk link to a switch and gaining access to the VLANs in a LAN. 
 Although end host do not use DTP messages a malicious user can use tools like [Yersinia](https://www.kali.org/tools/yersinia/) to send DTP messages.
 ![[DTP Yersinia Hack.png]]
@@ -326,8 +327,70 @@ The *VLAN Trunking Protocol (VTP)* is another Cisco-proprietary protocol enables
 >[!note] 
 >The VLAN database is stored is stored in the `vlan.dat` file, which can be viewed with the `dir flash:` or `show flash:` commands.
 
-## VTP synchronization
+## VTP Revision Number and Domain
+The *VTP revision number* is used to track the latest version of a VLAN database, it starts with 0 and is incremented when the database is changed (a VLAN is created, deleted, renamed). This also causes the switch to inform other switches in the *VTP domain* of the changes so they can update their databases.
 
+>[!warning]
+>If you add a switch to a VTP domain make sure that its VTP revision number is 0.
+>If it is not 0 you have to reset it, which can be done by:
+>- Change the VTP domain name and then back to the original name.
+>- Change the VTP mode to transparent and back to server or client (works only in Version 1 and 2)
+>- Change the VTP mode to off and then back to server or client (works only in Version 1 and 2)
+>  
+>  If you do not do this the newly added switch might have a higher revision number if it was already used in another VTP domain, which leads the other switches to synchronize their databases to the new one. This can cause Network problems and outages.
+
+A *VTP domain* is a group of switches in a LAN that share the same *VTP domain name*. 
+By default, switches do not have a VTP domain name so you have to configure one with the command `vtp donmain domain-name`:
+```
+SW1(config)# vtp domain Domain1
+```
+After that SW1 will send VTP messages to other switches in the LAN and all switches without a VTP domain name will adopt the domain name from SW1.
+## VTP Modes
+A switch can operate in one of four different modes, which can be configured with the `vtp mode mode` command.
+- **Server**:
+    - default mode 
+  - switch can create, modify and delete VLANs
+  - will advertise VLAN database changes to other switches
+  - will synchronize its own database upon receiving an advertisement with a higher revision number
+  - recommended mode for all switches in the domain
+  ```
+	SW1(config)# vtp mode server
+	```
+
+- **Client**:
+  - Switch cannot create, modify or delete VLANs, otherwise behaves like server
+  ```
+	SW1(config)# vtp mode client 
+	```
+  
+- **Transparent**:
+	- Switch can create, modify and delete VLANs, but will not advertise changes or synchronize its own database
+	- will forward VTP messages between switches in the same domain.
+	- recommended for independently managed switches without interrupting VTP operation on other switches
+- **Off**:
+	- switch can create, modify and delete VLANs
+	- will not advertise or synchronize changes
+	- does not forward VTP messages
+	- recommended mode for all switches if VTP is not used in the LAN
+
+## VTP Versions
+There are three versions of VTP available, but Version 1 and 2 are outdated.
+Version 3 introduced the off mode, the primary/secondary server concept and extended-range VLAN support.
+You can set the VTP version with the `vtp version version` command:
+```
+SW1(config)# vtp version 3 
+```
+### Primary/ Secondary Server
+The *Primary Server* in VTP version 3 is the only server in a VTP domain that can create, modify and delete VLANs. You can set the primary server with the `vtp primary` command:
+```
+SW1# vtp primary
+```
+
+The other switches in server mode are now *Secondary Servers* and are functionally clients, but they become the primary server when the `vtp primary` command is executed on it.
+### Extended-Range VLANs
+Before Version 3 only the normal-range VLANs 1-1005 were available for use, the extended-range VLANs 1006-4094 were reserved for internal application.
+
+## VTP 
 
 # Inter-VLAN Routing
 Hosts in one VLAN cannot communicate with hosts in other VLANs, unless there is a router or a Layer 3 switch.

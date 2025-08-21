@@ -62,5 +62,35 @@ This standard is a port-based access control and authentication protocol that de
 
 ## MAC Address Table Attacks
 - MAC flooding: use a tool like [macof](https://www.kali.org/tools/dsniff/#macof) to generate fake MAC addresses and flood the switch until the MAC table "overflows", all traffic will be broadcasted allowing an attacker to capture all frames sent on the LAN/VLAN
+## VLAN
+### VLAN Hopping
+This attack enables the attacker to see traffic from other VLANs without a router, by configuring a host to spoof 802.1Q and DTP signaling to trunk with a connected switch.
 
-# VLAN Hopping
+### VLAN Double-Tagging
+In this attack a 802.1Q tag is hidden inside a frame that already has an 802.1Q tag. This allows the frame to be sent to a VLAN that the original tag did not specify.
+1. The attacker sends a frame to the switch which has a tag to the native VLAN and a inner tag for the victims VLAN
+2. The switch receives the frame and inspects the first tag and forwards the frame out of all native VLAN ports after stripping the tag. 
+3. When the frame is received on another switch it again checks the tag, which is addressed to the victims VLAN and forwards the frame to the victim or floods the VLAN.
+
+### VLAN Attack Mitigation
+- Disabling trunking on all access ports
+- Disable auto trunking on trunk links so that trunks must be manually enabled
+- Be sure that the native VLAN is only used for trunk links
+
+## DHCP Attacks
+### DHCP Starvation
+In this attack a attacker uses tools like [Gobbler](https://sourceforge.net/projects/gobbler/) to try to lease the entire IP pool with fake MAC addresses. This creates a DoS for connecting clients as they are unable to receive a IP address.
+### DHCP Spoofing
+This attack is done by connecting a rouge DHCP server to a network, which provides false IP configuration parameters to connecting clients:
+- default gateway: the default gateway given to the host can be used for a man-in-the-middle attack
+- DNS server: the rouge DNS server point the clients to malicious websites
+- IP: provides a fake IP address creating a DoS attack on the client
+
+## Address Spoofing
+An attacker can spoof the IP and MAC address of his computer
+## STP Attack
+Attackers can manipulate the STP to disrupt the network or make their system appear as a root bridge.
+
+## Cisco Discovery Protocol (CDP)
+This protocol is a Layer 2 link discovery protocol, which is used for auto-configuration of connections and troubleshoot networks.
+The information sent can also be used by an attacker as the messages are broadcasted unencrypted and unauthenticated.
