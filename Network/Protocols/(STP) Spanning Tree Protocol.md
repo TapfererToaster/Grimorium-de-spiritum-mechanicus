@@ -1,8 +1,9 @@
 #CCNA 
+![[Logical Physical Topology.png]]
 The *Spanning Tree Protocol (STP)* is a loop-preventing protocol that allows for redundancy in a Layer 2 topology. 
 >[!note]
 >Unlike Layer 3 protocols (IPv4, IPv6), Layer 2 Ethernet has no mechanism to recognize and eliminate endlessly looping frames.
->Looping frames can also cause *MAC address flapping*m, which is when a switch learns the same MAC address on multiple ports.
+>Looping frames can also cause *MAC address flapping*, which is when a switch learns the same MAC address on multiple ports.
 
 - IEEE 802.D is the original IEEE MAC Bridging standard for STP.
 - When a redundant link fails STP recalculates the best link
@@ -25,25 +26,32 @@ The *Spanning Tree Protocol (STP)* is a loop-preventing protocol that allows for
    If a blocked path is needed to compensate for a switch or cable failure, STP recalculates the paths and unblocks the necessary ports
    ![[STA Recalculation.png]]
 
-# STP Operations
-Switches use *Bridge Protocol Data Units (BPDUs)* to share information about themselves and their connections.
+# STP Algorithm
+Switches use *Bridge Protocol Data Units (BPDUs)* to share information about themselves and their connections, the *bridge identifier (BID)*, which identifies the switch in the LAN and the BID of the root bridge are important for the root bridge election.
+## The BID
+![[Bridge Identifier (BID).png]]
 
-![[Bridge ID.png]]
 - **Bridge Priority**
   The default value for all Cisco switches is the decimal value 32768. And the range is 0 to 61440 in increments of 4096. A lower bridge priority is preferable with 0 taking precedence over all other bridge priorities.
 - **Extended System ID**
-  A decimal value added to the bridge priority value in the BID to identify the VLAN for his BPDU. The extended system ID allows later implementations of STP to have different root bridges for different sets of VLANs
+  A decimal value added to the bridge priority to identify the VLAN for his BPDU. The extended system ID allows later implementations of STP to have different root bridges for different sets of VLANs. 
+
+>[!note]
+>The bridge priority and the extended system ID are added together to create the bridge priority.
+
 - **MAC address**
+  MAC address that identifies the switch not its ports.
   When two switches are configured with the same priority and have the same extended system ID, the switch having the lowest MAC address expressed in hexadecimal will have the lower BID. 
 ## Elect the Root Bridge
+![[Elect the root bridge.png]]
 - Switches exchange BPDUs to build a loop-free topology 
 - After a switch boots it begins to send out BPDU frames, containing the BID of the sending switch and the BID of the root bridge (Root ID), every two seconds
 - At first all switches declare themselves as the root bridge with their own BID set as the Root ID, through BPDU exchange the switches learn which one has the lowest BID and agree on one root bridge
 
 >[!note] Impact of default BIDs
->Because the default priority is 32768, two or more switche can have the same priority. If that happens the switch with the lowest MAX address will become the root bridge.
+>Because the default priority is 32768, two or more switches can have the same priority. If that happens the switch with the lowest MAC address will become the root bridge.
 >
->It is recommended that the administrator should configure the desired root bridge switch with a lower priority to ensure the root bridge descision best meets network requirements
+>It is recommended that the administrator should configure the desired root bridge switch with a lower priority to ensure the root bridge decision best meets network requirements
 
 ## Determine the Root Path Cost
 When the root bridge has been elected for a given spanning tree instance, the STA starts the process of determining the best paths to the root bridge from all destinations in the broadcast domain. The path information, known as the internal root path cost, is determined by the sum of all the individual port costs along the path from the switch to the root bridge.
@@ -51,17 +59,19 @@ When the root bridge has been elected for a given spanning tree instance, the ST
 The default port costs are defined by the speed at which the port operates.
 ![[Root Path Cost.png]]
 ## Elect the Root Ports
-After the root bridge has been determined, the STA algorithm is used to select the root port. The root port ist the port closest to the root bridge in terms of overall cost to the root bridge. 
-Paths with the lowest cost become preferred, other redundant paths are blocked.
-![[STA Elect root ports.png]]
+After the root bridge has been determined, the STA algorithm is used to select the root port, with information found in the BPDUs.
+The root port is selected using the following parameters:
+1. **Lowest root path cost**
+   Determines the most efficient path to the root bridge. When a switch forwards a BPDU it adds the cost of the port it received the BPDU.
+   ![[Lowest root path cost.png]]
 
-### Elect from Multiple Equal-Cost Paths
-When a switch has multiple equal-cost paths to the root bridge, the switch will determine a port using:
-- Lowest Sender BID
-- Lowest Sender Port Priority
-- Lowest Sender Port ID
+2. **Lowest neighbor BID**
+   If multiple ports on a switch have the same root path cost, the port connected to the neighbor with the lowest BID is selected as the root port.
+   ![[Lowest neighbor BID.png]]
+3. **Lowest neighbor port ID**
+   If multiple ports have the same root path cost and are connected to the same neighbor, the port connected to the neighboring port with the lowest port ID will be the root port.  
 ## Elect Designated Ports
-A *Designated Port* is a port on which traffic to the root bridge is received. The port is determined by the lowest internal routing cost to the rooting bridge (root port).
+A *Designated Port* is a port on which traffic from the root bridge is received. The port is determined by the lowest internal routing cost to the rooting bridge (root port).
 ![[Designated Ports.png]]
 >[!note] Designed Ports on Root Bridge
 >All ports on the root bridge are designated ports.

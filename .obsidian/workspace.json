@@ -20,17 +20,31 @@
             }
           },
           {
-            "id": "c542e13e2cf53035",
+            "id": "7e2422b13fea0407",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Network/Devices/Switches.md",
+                "file": "Network/IPv6.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Switches"
+              "title": "IPv6"
+            }
+          },
+          {
+            "id": "7d91d3bc33304781",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Cloud.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Cloud"
             }
           },
           {
@@ -39,16 +53,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux System Administration.md",
+                "file": "Microsoft/Intune.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Linux System Administration"
+              "title": "Intune"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -170,13 +184,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linux System Administration.md",
+                "file": "Microsoft/Intune.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Linux System Administration"
+              "title": "Outline of Intune"
             }
           }
         ],
@@ -201,51 +215,51 @@
   },
   "active": "f4c3c0e2e33ee808",
   "lastOpenFiles": [
-    "Bilder/Linux System Administration/Sysstat binaries.png",
-    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
     "Linux System Administration.md",
-    "Pasted Image 20250821152209_696.png",
+    "Microsoft/Intune.md",
+    "Microsoft",
+    "Cloud.md",
+    "Network/IPv6.md",
+    "Azure.md",
+    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
+    "Pasted image 20250901114459.png",
+    "Pasted Image 20250901114423_875.png",
+    "Bilder/Cloud/Azure shared responsibility.png",
+    "Bilder/Cloud",
+    "bilder/Cloud",
+    "bilder/Cloud/Azure shared responsibility.png",
+    "Pasted image 20250901114428.png",
+    "Docker.md",
+    "Virtualization.md",
+    "README.md",
+    "Printer.md",
+    "Organizations.md",
+    "Network/Protocols/(STP) Spanning Tree Protocol.md",
+    "Network/Protocols/(ICMP) Internet Control Message Protocol.md",
+    "Network/Routing.md",
+    "Network/Protocols/(DHCPv4) Dynamic Host Configuration Protocol.md",
     "Network/Devices/Switches.md",
+    "Bilder/Linux System Administration/top CPU sorting.png",
+    "Pasted image 20250822154434.png",
+    "Pasted Image 20250822154431_614.png",
+    "Pasted image 20250822154414.png",
+    "Bilder/STP/Elect the root bridge.png",
     "Network/Devices/Router.md",
     "Network/LAN Security Concepts.md",
     "Network/Protocols/(FHRP) First Hop Redundancy Protocol.md",
-    "Bilder/Linux System Administration/Securing the system summary.png",
-    "Pasted image 20250821104112.png",
-    "Pasted Image 20250821104043_749.png",
     "H4CX0R/Nmap.md",
     "H4CX0R/Tools.md",
     "Network/(VLAN) Virtual LAN.md",
     "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
-    "Network/Protocols/(STP) Spanning Tree Protocol.md",
-    "Docker.md",
     "H4CX0R/Tcpdump.md",
-    "Pasted image 20250813114523.png",
-    "Bilder/Linux System Administration/Secure Services Network Daemons.png",
-    "Pasted image 20250813114424.png",
-    "Pasted Image 20250813114353_717.png",
-    "Bilder/LAN Security Concepts/IEEE 802.1X.png",
-    "Pasted Image 20250812143012_731.png",
     "Bilder/LAN Security Concepts/desktop.ini",
     "Bilder/LAN Security Concepts",
     "bilder/LAN Security Concepts",
-    "Network/Protocols/(DHCPv4) Dynamic Host Configuration Protocol.md",
     "dhcp.md",
-    "Network/IPv6.md",
     "Network/(OSI) Open Systems Interconnection-Modell.md",
     "Bilder/FHRP",
-    "Network/Protocols/(DHCPv6).md",
-    "Network/EtherChannel.md",
-    "Network/IPv4.md",
-    "VLSM Tokyo LAN A.png.md",
-    "Programming Languages/Python.md",
     "Bilder/Reconnaisance",
-    "shodan.io.md",
     "H4CX0R/Untitled",
-    "Bilder/Linux System Administration",
-    "Programming Languages/Go.md",
-    "Network/Routing.md",
-    "Bilder/Routing",
-    "Bilder/DHCPv6",
-    "Bilder/Etherchannel/desktop.ini"
+    "Bilder/Linux System Administration"
   ]
 }

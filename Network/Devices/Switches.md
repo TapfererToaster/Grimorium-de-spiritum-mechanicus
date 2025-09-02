@@ -451,4 +451,23 @@ By default the switch can be managed through VLAN1, but also all ports are assig
 - **Step 3**: Verify Configuration
 	- `S1# show ip interface brief`
 	- `S1# show ipv6 interface brief`
+
+# STP configuration
+## Bridge Priority
+To configure a switch's root priority with `spanning-tree vlan vlan-id priority priority-value`
+```
+SW1(config)# spanning-tree vlan 1 priority 24576
+```
+>[!note]
+>The bridge priority must be in increments of 4096
+
+You can also configure the priority of a switch with `spanning-tree vlan vlan-id root {primary | secondary}` 
+```
+SW1(config)# spanning-tree vlan 1 root primary
+```
+
+>[!note]
+>This method is not recommended as configuring a switch as `secondary` does not guarantee that it will be set as the root bridge if the original fails. Another reason is that setting a switch to `primary` does not always work as the command cannot set the priority to 0.
+>The best method to set a switch as the root bridge is by setting the priority to 0.
 # Security Configuration
+

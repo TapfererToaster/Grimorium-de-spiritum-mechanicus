@@ -966,4 +966,35 @@ To check performance and format system statistics you can use [`sysstat`](https:
  ![[Sysstat binaries.png]]
  
  Another tool you can use is `vmstat`.
- Both tools 
+ Both tools you have to provide a specific number of snapshots and a time delay between them in seconds.
+ If you want that the tools take 2 snapshots with 5 seconds between them use:
+ ```
+ $ iostat 5 2
+ $ vmstat 5 2
+ ```  
+
+## Gathering System Activity Reports
+You can use the [`sar`](https://www.geeksforgeeks.org/linux-unix/sar-command-linux-monitor-system-performance/) command to create system activity reports. You also have to provide a number of snapshots and a delay between them.
+```
+$ sar 5 5
+```
+## Formatting System Activity Reports
+To capture system data collected by `sar` to a file in a format such as CSV or XML, you can use the  [`sadf`](https://man7.org/linux/man-pages/man1/sadf.1.html) command.
+
+## Tracking CPU Usage
+You can get a real-time view of a systems that consume the most CPU resources with the `top` command as well as `atop` and `htop`.
+>[!note]
+>You can sort the output of `top`:
+>![[top CPU sorting.png]]
+
+## sysstat Monitoring
+The `sysstat` (System Status) package is a native monitoring tool that is prepackaged on Linux distributions.
+The package contains:
+- `sar`: system activity reporter
+- `sadf`: system activity data formatter that displays data in multiple formats
+- `iostat`: displays CPU utilization and disk I/O statistics
+- `tapestat` displays tape and tape drive statistics
+- `mpstat`: displays multi-processor statistics
+- `pidstat`: reports statistics by process ID
+- `cifsiostat`: CIFS (Samba/SMB) I/O statistics utility
+
