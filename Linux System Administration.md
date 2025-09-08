@@ -998,3 +998,5 @@ The package contains:
 - `pidstat`: reports statistics by process ID
 - `cifsiostat`: CIFS (Samba/SMB) I/O statistics utility
 
+# Scripting and Automation
+
