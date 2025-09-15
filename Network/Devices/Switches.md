@@ -452,8 +452,8 @@ By default the switch can be managed through VLAN1, but also all ports are assig
 	- `S1# show ip interface brief`
 	- `S1# show ipv6 interface brief`
 
-# STP configuration
-## Bridge Priority
+## STP configuration
+### Bridge Priority
 To configure a switch's root priority with `spanning-tree vlan vlan-id priority priority-value`
 ```
 SW1(config)# spanning-tree vlan 1 priority 24576
@@ -469,5 +469,34 @@ SW1(config)# spanning-tree vlan 1 root primary
 >[!note]
 >This method is not recommended as configuring a switch as `secondary` does not guarantee that it will be set as the root bridge if the original fails. Another reason is that setting a switch to `primary` does not always work as the command cannot set the priority to 0.
 >The best method to set a switch as the root bridge is by setting the priority to 0.
-# Security Configuration
+## Security Configuration
+
+### Secure Unused Ports
+It is best practice to disable all unused switch ports, by either navigating to each individual unused port or by defining a range of ports and then using the `shutdown` command:
+```
+Switch(config)# interface range fa0/8 - 24
+Switch(configif-range)# shutdown
+```
+>[!note]
+>If the switch ports are needed simply activate them with the `no shutdown` command.
+
+### Enable Port Security
+Port security limits the number of valid MAC addresses allowed on a port.
+To enable port security navigate to the port and use the `switchport port-security` command.
+>[!important]
+>The `switchport port-security` command can only be used on manually configured [[(VLAN) Virtual LAN#Access Port Assignment|access]] or [[(VLAN) Virtual LAN#Trunk Configuration|trunk]] ports.he number of valid MAC addresses allowed on a port.
+
+```
+Switch(config)# interface f0/1
+Switch(config-if)# switchport port-security
+```
+
+>[!warning]
+>If more than device is connected to a port after port-security is enabled, the port will transition to the `error-disabled` state
+
+Use `show port-security interface` to display the current security settings of a port.
+```
+Switch# show port-security interface f0/1
+```
+#### Limit and Learn MAC Addresses
 

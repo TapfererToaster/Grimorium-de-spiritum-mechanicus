@@ -45,3 +45,21 @@ The following tasks can be done by Autopilot using cloud-based services:
 - Present customized out-of-the-box-experience (OOBE) content 
 - Reset, repurpose and recover devices
 
+# Deploying Applications
+## Add Applications to Intune
+The following app types can be added in Intune:
+- **Store Apps**:
+  Apps that are uploaded to the Microsoft, iOS or Android store and are maintained by the developer.
+  You select the app from a list in Intune.
+- **Microsoft 365 Apps**:
+  Apps included in the M 365 suite. You can also install apps for the MS Project Online desktop and MS Visio Pro.
+  The apps are displayed as a single entry in the list of app types.
+- **Web Link**:
+  Client-Server applications, where the server provides the web app, including the UI, content and functionality. The app is separately maintained in the web. 
+- **Build-in app**:
+  Here you can assign curated managed apps, such as MS 365, like Excel, OneDrive, Outlook and others. After adding an app the app type is displayed as an Built-in iOS or Built-in Android app.
+- **Line-of-business (LOB) app**: 
+  LOB apps are apps that are added from an app installation file. 
+- **Windows app (Win32)**:
+  Can be used to add, install and uninstall apps in various formats such as MSIs, Setup.exe or MSP.
+## Manage Win32 apps

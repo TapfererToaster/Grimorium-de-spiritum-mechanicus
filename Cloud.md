@@ -13,16 +13,19 @@ When using cloud services the responsibilities are split between the cloud provi
 - *Infrastructure as a Service (IaaS)*
 
 ![[Azure shared responsibility.png]]The cloud provider is always responsible for the physical space and the hardware, while the consumer is always responsible for administrative task including the data stored and who and what device can access the cloud.
-# Cloud models
-## Private Cloud
-A private cloud is used by a single entity or cooperation, which can be hosted from an onsite datacenter, a dedicated offsite datacenter or even by a thrid party cloud provider
-## Public Cloud
-Public clouds are built, controlled and maintained by third party cloud providers and anyone can purchase cloud services.
+# Evolution of the Cloud Model and Architecture
+## Cloud Models
+![[Evolution of Cloud Models.png]]
 
->[!note] Multi-cloud
->It is also possible to use multiple public cloud provider, which means you manage resources and security in these environments.
-## Hybrid Cloud
-Hybrid clouds use an interconnected environment of public and private clouds that allow private clouds to temporarily use public cloud resources if computing demands surge. It is also possible to flexibly choose which services should be deployed in a public or private cloud.
+>[!note] Public and Edge Computing
+>- Public cloud has a centralized data collection, processing and analysis approach.   
+>- Edge computing has a distribute computing approach where data is collected, processed and analyzed locally. This provides better latency and can be approached when a company has strict compliance on where data is stored and processed.
+> 
+
+## Cloud Architecture
+![[Evolution Cloud Architecure.png]]
+# Cloud models
+![[Cloud models.png]]
 
 |**Public cloud**|**Private cloud**|**Hybrid cloud**|
 |---|---|---|
@@ -30,24 +33,79 @@ Hybrid clouds use an interconnected environment of public and private clouds tha
 |Applications can be quickly provisioned and deprovisioned|Data is not collocated with other organizations’ data|Organizations determine where to run their applications|
 |Organizations pay only for what they use|Hardware must be purchased for startup and maintenance|Organizations control security, compliance, or legal requirements|
 |Organizations don’t have complete control over resources and security|Organizations are responsible for hardware maintenance and updates||
-## [[Azure]]
-### Azure Arc
-A set of technologies that help to manage cloud environments.
-### Azure VMware Solution
-Allows consumers who already have a private cloud with VMware to run VMware workloads in Azure. This can be done if the consumer wants to migrate to a public or hybrid cloud.
 
+## Private Cloud
+A private cloud is used by a single entity (tenant), which can be hosted from an onsite datacenter, a dedicated offsite datacenter or even by a third party cloud provider. The hardware and resources are dedicated to the tenant and they are in complete control of it. 
+
+Characteristics:
+- Computing resources can be created on-premises or provided by a cloud provider, resources are only available within the capacity provisioned
+-  Hardware is dedicated to a single tenant
+- On-premises resources may be decommissioned if a cloud provider is used
+- Computing resource access is possible via a local/private network; the private cloud may be disconnected from the internet
+- The tenant has complete control of the security, governance, hardware and compliance
+
+Examples of private cloud platforms:
+- Azure Stack
+- Red Hat OpenShift
+- VMware vCloud Suite
+## Public Cloud
+Public clouds are built, controlled and maintained by third party cloud providers and can be used by multiple tenants, which all have a share of the resources.
+
+>[!note] Multi-cloud
+>It is also possible to use multiple public cloud provider, which means you manage resources and security in these environments.
+
+Characteristics:
+- Consumption-based billing, you pay only for the resources you used
+- Almost unlimited resources are available
+- Performance, scalability and elasticity is provided, rapid, on-demand and automated provisioning and de-provisioning of compute resources are available
+- Availability, reliability, fault tolerance and redundancy are provided
+- Resource access is possible via internet and privately managed networks
+- Self-service management though a web browser or a command-line interface
+- Least control over security, protection and compliance
+- Access can be configured with [[Entra ID]] or Windows Server Active Directory when you sync the identity provider directories.
+
+Examples of public cloud platforms:
+- Microsoft [[Azure]]
+- Amazon Web Services (AWS)
+- Alibaba Cloud
+- Google Cloud Platform
+## Hybrid Cloud
+Hybrid clouds use an interconnected environment of public and private clouds that allow private clouds to temporarily use public cloud resources if computing demands surge. 
+It is also possible to flexibly choose which services should be run in a public or private cloud.
+
+Characteristics:
+- Allows the tenant to use resources on the cloud providers public cloud and other resources on on-premises private cloud, which can be connected with Microsoft ExpressRoute
+- Allows to extend computing resource capacity to a public cloud
+- Private cloud hardware must be maintained by the tenant, public cloud hardware is maintained by the cloud provider
 # Service Types
-![[Azure shared responsibility.png]]
+![[Service Types 1.png|700x274]]
 ## Infrastructure as a Service (IaaS)
-When using IaaS you rent the hardware in the datacenter of the cloud provider.
+When using IaaS you rent the hardware in the datacenter of the cloud provider and can host virtual machines and infrastructure services.
+
+Characteristics:
+- The tenant creates Virtual Machines (installing OS and software), storage, and computing resources 
+- Resources such as processors, memory and VMs can be increased with self-service without redeploying or creating new VMs
+- Direct access and complete control over networking, security, VMs, the OS and roles/services, such as servers installed or running on the VMs
+
+Microsoft IaaS resources:
+- Azure Virtual Machines
+- Azure Storage
+- Azure networking
 ### Scenarios
 - **Lift-and-shift migration**:
   You replicate the existing on-prem datacenter with cloud resources and then move the things running on-prem to the IaaS.
 - **Testing and development**:
   You configure a test environment that you can rapidly replicate. With IaaS you can start up and shut down multiple different environments, while maintaining complete control.
-
 ## Platform as a Service (PaaS)
 Using PaaS the cloud provider is responsible for the hardware as well as maintaining operating systems, middleware, development tools, databases and business intelligence services.
+The tenant hosts their application, code, data and business logic.
+
+Characteristics:
+- Provides a ready-to-use environment and platform with pre-deployed resources, development frameworks, languages and runtimes. This allows for fast deployment of applications, code business logic, data, ...
+- Provides on-demand autoscaling
+- No direct access or control over VMs and other applications, services or roles and which versions are running on the VMs
+- 
+
 ### Scenarios
 - **Development framework**:
   With PaaS you can build a framework on which you can develop or customize cloud-based applications with built-in software components. While featuring scalability, high-availability and multi-tenant capability
@@ -60,4 +118,15 @@ With SaaS you rent a and use a fully developed application, whether it is a emai
 - Email and messaging
 - Business productivity applications
 - Finance and expense tracking
+## Analogy
+![[Cloud Services Analogy.png|660x318]]
+
+## Serverless/ Function as a Service (FaaS)
+With FaaS the runtime layer is abstracted, which allows developers to write code without considering what is running it.
+
+Characteristics:
+- Event-based workloads are the best use case
+- Long-running tasks are not well suited 
+- Execution environment cannot be customized
+- Cloud provider supports specific languages and runtimes
 

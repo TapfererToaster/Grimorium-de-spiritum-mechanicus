@@ -25,16 +25,44 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux System Administration.md",
+                "file": "Network/Devices/Switches.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Linux System Administration"
+              "title": "Switches"
+            }
+          },
+          {
+            "id": "27e5bc1d2b7ddc1b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Cloud.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Cloud"
+            }
+          },
+          {
+            "id": "12fd903e76999e00",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Microsoft/Azure.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Azure"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -108,7 +136,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
+                "file": "Network/Devices/Switches.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +146,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Reconnaissance and Vulnerability Scanning"
+              "title": "Backlinks for Switches"
             }
           },
           {
@@ -127,12 +155,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Docker.md",
+                "file": "Network/Devices/Switches.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Docker"
+              "title": "Outgoing links from Switches"
             }
           },
           {
@@ -156,17 +184,16 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linux System Administration.md",
+                "file": "Network/Devices/Switches.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Linux System Administration"
+              "title": "Outline of Switches"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "horizontal",
@@ -185,48 +212,47 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "7e2422b13fea0407",
+  "active": "27e5bc1d2b7ddc1b",
   "lastOpenFiles": [
-    "Linux System Administration.md",
     "Microsoft/Azure.md",
+    "Cloud.md",
+    "Network/Devices/Switches.md",
+    "Pasted image 20250915102529.png",
+    "Bilder/Cloud/Service Types 1.png",
+    "Pasted Image 20250915102430_808.png",
+    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
+    "Pasted image 20250915102729.png",
+    "Pasted image 20250915102711.png",
+    "Pasted Image 20250915102311_336.png",
+    "Pasted Image 20250915102148_324.png",
+    "Pasted image 20250915095609.png",
+    "Pasted Image 20250915095605_462.png",
+    "Bilder/Cloud/Cloud Services Analogy.png",
+    "Pasted.md",
+    "Cryptography.md",
     "Microsoft/Intune.md",
     "Microsoft/Entra ID.md",
-    "Bilder/Entra ID/Identity Types.png",
-    "Bilder/Entra ID",
-    "Bilder/Entra ID/User type property.png",
-    "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
-    "Pasted Image 20250905103224_384.png",
-    "Pasted image 20250905103150.png",
-    "Network/IPv6.md",
-    "Cloud.md",
-    "Microsoft",
-    "Azure.md",
-    "Pasted image 20250901114459.png",
-    "Pasted Image 20250901114423_875.png",
-    "Bilder/Cloud/Azure shared responsibility.png",
-    "Bilder/Cloud",
-    "bilder/Cloud",
-    "bilder/Cloud/Azure shared responsibility.png",
-    "Pasted image 20250901114428.png",
     "Docker.md",
     "Virtualization.md",
-    "README.md",
-    "Printer.md",
-    "Organizations.md",
-    "Network/Protocols/(STP) Spanning Tree Protocol.md",
-    "Network/Protocols/(ICMP) Internet Control Message Protocol.md",
-    "Network/Routing.md",
-    "Network/Protocols/(DHCPv4) Dynamic Host Configuration Protocol.md",
-    "Network/Devices/Switches.md",
-    "Bilder/Linux System Administration/top CPU sorting.png",
-    "Network/Devices/Router.md",
-    "Network/LAN Security Concepts.md",
-    "Network/Protocols/(FHRP) First Hop Redundancy Protocol.md",
-    "H4CX0R/Nmap.md",
-    "H4CX0R/Tools.md",
     "Network/(VLAN) Virtual LAN.md",
+    "Linux System Administration.md",
+    "Network/(OSI) Open Systems Interconnection-Modell.md",
+    "Network/LAN Security Concepts.md",
+    "Network/Network topologies.md",
+    "Network/Routing.md",
+    "Network/TCP-IP Modell.md",
+    "H4CX0R/Wireshark.md",
+    "H4CX0R/TryHackMe.md",
     "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
+    "H4CX0R/Nmap.md",
     "H4CX0R/Tcpdump.md",
+    "Email.md",
+    "Bilder/Entra ID",
+    "Network/IPv6.md",
+    "Microsoft",
+    "Bilder/Cloud",
+    "bilder/Cloud",
+    "README.md",
     "Bilder/LAN Security Concepts/desktop.ini",
     "Bilder/LAN Security Concepts",
     "bilder/LAN Security Concepts",
