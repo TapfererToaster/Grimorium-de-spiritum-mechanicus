@@ -91,6 +91,9 @@ Microsoft IaaS resources:
 - Azure Virtual Machines
 - Azure Storage
 - Azure networking
+
+>[!note]
+>IaaS VMs do not provide scale, elasticity, high availability and disaster recovery no resources that provide these functions are not designed and implemented.
 ### Scenarios
 - **Lift-and-shift migration**:
   You replicate the existing on-prem datacenter with cloud resources and then move the things running on-prem to the IaaS.
@@ -104,16 +107,50 @@ Characteristics:
 - Provides a ready-to-use environment and platform with pre-deployed resources, development frameworks, languages and runtimes. This allows for fast deployment of applications, code business logic, data, ...
 - Provides on-demand autoscaling
 - No direct access or control over VMs and other applications, services or roles and which versions are running on the VMs
-- 
 
+Microsoft PaaS services:
+- Azure App Service
+- Azure SQL Database
+- Cosmo DB
+- Azure Files
+- Azure Active Directory Domain Services
 ### Scenarios
 - **Development framework**:
   With PaaS you can build a framework on which you can develop or customize cloud-based applications with built-in software components. While featuring scalability, high-availability and multi-tenant capability
 - **Analytics or business intelligence:**
   With tools that are provided with PaaS organizations can analyze and mine data to find insides and pattern, enabling them to improve buisiness decisions.
+## Serverless/ Function as a Service (FaaS)
+With FaaS the runtime layer is abstracted, which allows the tenant to run code and business logic and the cloud provider hosts it in their language, runtime and compute environment.
 
+Characteristics:
+- Event-based workloads are the best use case
+- Long-running tasks are not well suited 
+- Execution environment cannot be customized
+- Cloud provider supports specific languages and runtimes
+- The tenant only controls the application, code and business logic layers
+
+Microsoft FaaS resources:
+- Azure Functions
+- Azure Logic Apps
 ## Software as a Service (SaaS)
 With SaaS you rent a and use a fully developed application, whether it is a email/ messaging application or financial software.
+
+Characteristics:
+- Cloud provider is responsible for the application/solution and its updates, scalability, availability and security
+- Applications can be directly configured and instantly used 
+
+Microsoft SaaS solutions:
+- Microsoft Teams
+- Microsoft Exchange Online
+- Microsoft SharePoint Online
+- Microsoft OneDrive
+- Microsoft Dynamics 365
+
+Other SaaS solutions:
+- Zoom
+- Salesforce
+- Dropbox
+- Google Mail/ Docs
 ### Scenarios
 - Email and messaging
 - Business productivity applications
@@ -121,12 +158,4 @@ With SaaS you rent a and use a fully developed application, whether it is a emai
 ## Analogy
 ![[Cloud Services Analogy.png|660x318]]
 
-## Serverless/ Function as a Service (FaaS)
-With FaaS the runtime layer is abstracted, which allows developers to write code without considering what is running it.
-
-Characteristics:
-- Event-based workloads are the best use case
-- Long-running tasks are not well suited 
-- Execution environment cannot be customized
-- Cloud provider supports specific languages and runtimes
 

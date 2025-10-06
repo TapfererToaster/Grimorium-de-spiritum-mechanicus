@@ -1000,4 +1000,116 @@ The package contains:
 
 # Scripting and Automation
 
+> [!tip]
+> Scripts for various tasks can be found online. You can adapt those scripts to your need, but it is important that you understand what these scripts do.
+> 
+> It is also important to learn the basics of scripting such as:
+> - reading/writing a file
+> - grepping
+> - piping
+> - redirecting
+> - looping
+> - calling other scripts from within a script
+
+## Creating Scripts
+Before writing a script it is important to outline what the script should do. 
+For example a backup script outline could be:
+- Create a tar file of the `/etc` directory
+- Compress the file
+- Transfer the fiel to server `archive`
+
+Now you can write your script, for example:
+```
+#!/bin/bash
+
+#Create a tar file of /etc
+sudo tar cvf server1_etc.tar /etc
+
+# Compress the tar file
+gzip -9 server1_etc.tar
+
+# Transfer the file to archive into the /server1/backups directory
+scp server1_etc.tar.gz archive:/server1/backups 
+```
+
+After saving the file give it execute permission.
+
+It is advised to create a *backup and restore (bur)* user and set the target directory (`/server1/backups`) as executable and writable only to that user. The user should be created on all systems and passwordless SSH key files should be configured for them.
+## Scheduling Tasks with cron
+The `cron` utility is available on all Linux systems and is used to schedule commands to run at specific times.
+The syntax for `cron` is:
+![[cron syntax.png|409x135]]
+
+- If you want that a script is executed every five minutes the `cron` entry would be:
+	```
+	0,5,10,15,20,25,30,35,40,45,50,55 * * * * /path/to/scriptsh
+	```
+- If a script should run every Monday, Wednesday and Friday at 2:00 p.m. the schedule task would be:
+	```
+	0 14 * * 1,3,5 /path/to/script.sh
+	```
+- If a script should be run at 6 a.m. on the 15th of every month se:
+	```
+	  0 6 15 * * /path/to/script.sh
+	```
+
+## Preventing Time Drift with Network Time Protocol
+It is important that when using scripts and automated tasks that operate on multiple machines and need to execute tasks in a specific order, to ensure that the internal time of the machines is synchronized.
+To keep the time synchronized among all systems you can use a reference to an internet time server plus a time server inside the network.
+Install `ntp` or `chrony` to allow your system to synchronize with an external (internet) time server.
+```
+$ sudo apt install chrony
+$ sudo systemctl enable chronyd
+$sudo systemctl start chronyd
+```
+
+You can also configure `chrony` as a time server for your local network by uncommenting the following two lines in the `chrony.conf`:
+```
+# Allow NTP client access from local network
+allow 192.168.0.0/16 (change to your subnet)
+
+# Serve time even if not synchronized to a time source
+local stratum 10
+```
+
+Then restart the `chronyd`:
+```
+sudo systemctl restart chronyd
+```
+
+After setting the time server with `chrony`, switch to the client systems and add the following line into the `chrony.conf` file:
+```
+server serverIP prefer iburst
+```
+
+# Deploying Samba for Windows Compatibility
+Samba enables Windows interoperability for Linux and Unix, which provides secure, stable, file and print services for non-Windows systems using the Server Message Block/Common Internet File System (SMB/CIFS) protocol and its own authentication structure (permissions and passwords).
+
+With Samba, Linux systems can:
+- share directories, filesystems and printers with Windows systems
+- Mount Windows shares
+- Browse the network for shares provided by Windows or other Linux computers
+- Participate in Windows domain authentication and authorization
+- Use Windows name resolution services
+- Use share printers
+
+With Samba installed on a Linux server, Windows systems can:
+- Browse Linux shares
+- Use shared printers
+- Map network drives to Linux shares
+
+## Planning a Samba Environment
+When given the task to create a shared file space, you should consider:
+1. Should this space be restricted to a specific group?
+2. Should everyone in this group be able to create and copy files in the shared space?
+3. Are there any default permissions you want to set on uploaded files?
+4. Do you need any read-only folder for documents?
+5. Is this a permanent or a temporary shared space?
+
+For example a facility manager gave the following answers:
+1. Yes, restrict to facilities employees only.
+2. Everyone needs to be able to copy and create files.
+3. Everyone in the group needs read and write access to all files.
+4. Yes, we need a Policies folder from which no one can edit or remove a file.
+5. This is a permanent space.
 # Troubleshooting Linux 
