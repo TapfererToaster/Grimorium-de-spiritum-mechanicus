@@ -1,5 +1,5 @@
 # Filesystem
-The Linux filesystem is hierarchical meaning at the top level is the root directory `/`. All other directories are subdirectories of the root directory `/`. Under the root directory no individual files are stored, these are kept in the different subdirectories.
+The Linux filesystem is hierarchical single-root filesystem meaning at the top level is a single root directory `/`. All other directories are subdirectories of the root directory `/`. Under the root directory no individual files are stored, these are kept in the different subdirectories.
 
 >[!note]
 >System files are protected from user modification and can only be modified by the root user.
@@ -25,12 +25,55 @@ The Linux filesystem is hierarchical meaning at the top level is the root direct
 | `/tmp`    | Directory for storing session information and temporary files       |
 | `/usr`    | Programs and libraries for users and user-related programs          |
 | `/var`    | Variable files such as logs, spools and queues                      |
+
+## Manipulating Files and Directories
+### Creating files and directories
+ - Create a **file**: 
+	```
+	$ touch file.txt
+	$ touch /path/to/file.txt
+	```
+ - Create a **directory**
+	```
+	$ mkdir directory
+	$ mkdir /path/to/directory
+	```
+	>[!note] 
+	>If you want to create a directory and its parent directory use `-p`. 
+	>f.e. you want to create `/opt/sw/network`, but `/sw` does not exist use:
+	>```
+	>$ mkdir sw/network
+	>```
+### Delete files and directories
+- Delete a **file**:
+	```
+	$ rm file.txt
+	$ rm /path/to/file.txt
+	```
+- Delete a **directory**:
+  ```
+  $ rm directory
+  $ rm /path/to/directory 
+	```
+
+>[!note]
+>Use `rm -i` to interactively ask for permission before deleting a file or directory.
+### Moving, copying and renaming files and directories
+- **Move** a file or directory:
+  ```
+  $ mv /source/path /destination/path
+	```
+- **Copy** a file or directory:
+  ```
+  $ cp /source/path /destination/path
+  ```
+
 # Command Line Interface (CLI)
 With the CLI you can interact with the system using commands that are entered with a keyboard or *standard input (stdin)*. The source from stdin can be a file redirection, programs and other sources. 
 The output to these commands are displayed on the screen or *standard output (stdout)* and when an error occurs you receive a *standard error (stderr)*.
  Basic Commands:
  - `pwd`: "print working directory"
-   displays where you currentls are on the filesystem
+   displays where you currently are on the filesystem
 ```
 $ pwd
 /home/user1
@@ -49,6 +92,9 @@ $ cd ..
 
 # Go to the home directory
 $ cd
+
+# Go to the previous directory
+$ cd -
 ```
 - `ls`: "list"
   lists the content of a specific directory or your current directoy
@@ -66,7 +112,27 @@ $ ls
 # List all content/hidden contents
 $ ls -a
 ```
+## Running Programs
 
+> [!tip]
+> Before running a program on a Linux system first check if the file is executable and if not you have to [[Linux (System Administration)#Change File Permissions|add the permission]].
+> ```
+> $ file /path/to/file
+> ```
+> 
+
+To run a program you simply enter the file name in the CLI
+```
+$ /path/to/fileName
+$ fileName
+```
+
+>[!note] Search Path `$PATH`
+>The search path is a list of directories that will be searched when the user enters a filename. This means when you enter a filename without a path the system searches the search path and if the file is not in one of the directories you will get an error.
+>To see the current path use:
+>```
+>$ echo $PATH
+>```
 # Regular and Privileged Accounts
 ## Regular User
 Regular user have almost unrestricted power in their own home directory to create, modify, remove and manipulate files, but outside of their directory they have almost no power. 
@@ -431,12 +497,194 @@ user individually
 	```
 
 # Networking and Security
+
+## Working with Interfaces
+The building block for networking is the interface, the most common are physical interfaces, VLAN interfaces and bridge interfaces. 
+### Interface configuration via the command line
+On the major Linux distribution you use the `iproute2` utility set, which can be used with `iproute` or `iproute2`. 
+>[!note] 
+>`iproute2` replaced the now deprecated `ifconfig` and `route` commands. 
+
+For interface configuration two subcommands are used: 
+- `ip link`: view or set interface link status
+- `ip addr`: view or set IP addressing configuration on interfaces
+
+#### Listing interfaces
+You can use both `ip link` or `ip addr` to list all the interfaces on a system, although the output will be slightly different.
+
+ To list the interfaces and their status use:
+ ```
+	$ ip link list
+	$ ip addr list
+```
+The possible States can be:
+	- **UP**: The interface is enabled
+	- **Lower_UP**: The Interface link is up
+	- **NO_CARRIER**: The interface is enabled, but there is no link
+	- **DOWN**: The interface is administratively disabled 
+#### Enabling/disabling an interface
+You also use `ip link` to disable and enable an interface
+```
+$ ip link set eth0 up
+$ ip link set eth0 down
+```
+#### Assigning and delete an IP address to an interface.
+- To assign an IP address to an interface use: `ip addr add address dev interface`:
+	```
+	$ ip addr add 192.168.0.1/24 dev ens3 
+	```
+>[!note]
+>If an interface already has an IP address assigned, `ip addr add` adds the new IP address, leaving the original address intact.
+
+- To delete an IP address from an interface use `ip addr del address dev interface`:
+  ```
+	$ ip addr del 192.168.0.1/24 dev ens3
+	```
+### Interface configuration via configuration files
+Another way to configure interfaces are via configuration files. While console commands are consistent across Linux distributions, config files and their location can be different.
+
+Debian systems can use a single file to configure all network interfaces, it can be found under `/etc/network/interfaces`.
+Each interface entry is separated by a configuration stanza starting with `auto interface` (f.e. `auto eth0`) 
+You can then configure: 
+- `inet static ip-address`: assign a static IP address (you can also assign the netmask (f.e. 192.168.0.1/24, making `netmask` unnecessary)
+- `inet dhcp`: use DHCP to assign an IP address
+- `netmask`: set the netmask (f.e. `255.255.255.0`)  
+
+>[!note]
+>It is possible to use separate files for interface configuration and include a pointer to the directory in `interfaces` file, f.e.:
+>```
+>source-directory /etc/network/interfaces.d/*
+>```
+
+For changes to take effect you need to restart the network interface, which can be achieved by using `ip link set` to disable and then enable the interface again.
+You can also use:
+```
+$ systemctl restart networking
+```
+
+### Using [[(VLAN) Virtual LAN|VLAN]] interfaces
+VLAN interfaces are useful when a host needs to communicate on multiple VLANs at the same time and you wish to minimize the number of switch ports and physical devices needed. As a host could communicate with a file server and a web server though one physical interface with two logical VLAN interfaces.
+#### Creating, Configuring and deleting VLAN interfaces
+To **create** a VLAN interface use:
+```
+$ ip link add link parent-device vlan-device type vlan id vlan-id
+$ ip link add link eth0 eth0.100 type vlan id 100
+```
+- *parent-device*: the physical adapter with which the interface is associated, f.e. `eth0` or `ens33`
+- *vlan-device*: name given to the logical VLAN interface
+  >[!note]
+  >Common convention for naming is the name of the parent device and the the VLAN ID separated by a dot `.`
+  >f.e.: `eth0.100`
+- *vlan-id*: the VLAN ID assigned to the logical interface
+>[!tip]
+>For the interface to be fully operational you need to enable it and assign an IP address.
+>```
+>$ ip link set eth0.100 up
+>$ ip addr add 192.168.0.10/24 dev eth0.100
+>```
+>
+>You also must gave a matching configuration an the physical switches.
+
+> [!warning]
+> Remember that `ip` commands are not persistent, you need to change the interface configuration file. 
+> On Debian the configuration stanza should be:
+> ```
+> auto eth0.100
+> iface eth0.100 inet static
+> address 192.168.0.10/24
+> ```
+> 
+
+To **delete** a VLAN interface you should first disable it and then delete it:
+```
+$ ip link set eth0.100 down
+$ ip link delete eth0.100
+```
+
+## Routing
+
+### Routing as an End Host
+You can use the `ip route` command for:
+- adding a static route to a network over a particular interface
+- remove a static route
+- change the default gateway
+
+**Example**
+We use `ip route list` on a host to get the current routing table:
+![[Routing as end host routing table.png|541x89]]
+
+Visualized as a diagram it would look like this:
+![[Routing as an end host sample network.png|503x202]]
+
+Now another router and subnet (`192.168.101.0/24`) is added to the `192.168.100.0/24` network, with which the host needs to communicate.
+![[Routing as an end host updated network.png|515x210]]
+
+The current routing table has no entry to the new network, we have to add one via the `ens8` interface:
+```
+$ ip route add destination-address via gateway-address dev interface
+$ ip route add 192.168.101.0/24 via 192.168.100.2 dev ens8
+```
+
+If another router and subnet is added we have to update the routing table again:
+![[Routing as an end host final network.png|533x247]]
+
+```
+$ ip route add 192.168.102.0/24 via 192.168.100.3/24 dev ens8 
+```
+
+To make these settings persistent modify the interface configuration file: 
+```
+auto eth1
+iface eth1 inet static
+	address 192.168.100.11
+	netmask 255.255.255.0
+	up ip route add 192.168.101.0/24 via 192.168.100.2 dev $IFACE
+	up ip route add 192.168.102.0/24 via 192.168.100.3 dev $IFACE
+```
+
+> [!NOTE]
+> `$IFACE` refers to the specific interface being configured and the `up` directive instructs Debian to run these commands after the interface comes up.
+
+If you want to remove a route from the routing table use:
+```
+$ ip route del destination-net via gateway-address
+$ ip route del 192.168.103.0/24 via 192.168.100.3
+```
+
+### Routing as a Router
+Linux systems can act as a router, when IP forwarding is enabled.
+By default Linux distributions have IP forwarding disabled, to verify use:
+```
+$ /usr/sbin/sysctl net.ipv4.ip_forward
+> net.ipv4.ip_forward = 0
+$ /usr/sbin/sysctl net.ipv6.conf
+> net.ipv6.conf.all.forwarding = 0
+```
+
+The `0` value indicates that IP forwarding is disabled, you can enable it
+- nonpersistently with: 
+  ```
+	$ sysctl -w net.ipv4.ip_forward=1
+	```
+- persistently by editing the `/etc/sysctl.conf` file:
+  ```
+  net.ipv4.ip_forward = 1
+  net.ipv6.conf.all.forwarding = 1
+	```
+	Then reboot  the Linux host or run  `$ sysctl -p path/to/config`
+
+After enabling IP forwarding the host acts as a router, but can only perform static routing so you need to use the `ip route` to configure routes.
+Options for dynamic routing are [Quagga ](https://www.nongnu.org/quagga/) and [BIRD](https://bird.network.cz/).  Additionally you can use [nftables](https://netfilter.org/projects/nftables/) to add *network address translation (NAT)* and *access control lists (ACLs)*.
+
+## Switching
+You can also configure a Linux machine to enable Layer 2 switching, acting as a switch.
+
 ## Pruning the System
 Pruning means to remove any unnecessary services and daemons from a system. 
 You should only install what you need to provide services to users and other systems. 
 Services that are only occasionally used or leave the system on a vulnerable state should only be activated when used and shut down when no longer used.
 ## Securing Network Daemons
-The simplest method to secure network daemons is to use secure versions of the services you want to provide, f.e. using DNSSEC for a DNS server, LDAPS for Ligthweight Directory Access Protocol (LDAP) server and HTTPS for web server.
+The simplest method to secure network daemons is to use secure versions of the services you want to provide, f.e. using DNSSEC for a DNS server, LDAPS for Lightweight Directory Access Protocol (LDAP) server and HTTPS for web server.
 Some secure services are:
 ![[Secure Services Network Daemons.png]]
 ## Secure Shell Daemon
@@ -1113,3 +1361,51 @@ For example a facility manager gave the following answers:
 4. Yes, we need a Policies folder from which no one can edit or remove a file.
 5. This is a permanent space.
 # Troubleshooting Linux 
+
+# Daemons
+Daemons, also called *services*, are processes that run in the background often used to provide network-based functionality. For example a DHCP/HTTP/DNS/FTP server would be run as a corresponding daemon. 
+To work with daemons you use *systemd*, for more look [here](https://systemd.io/).
+## Starting, stopping and restarting Daemons
+>[!note]
+>On distributions that use systemd you work with daemons via the `systemctl` utility found in `/usr/bin/systemctl`.
+>
+
+- To start a daemon use:
+	```
+	$ systemctl start service-name 
+	```
+- To top a daemon use: 
+  ```
+	$ systemctl stop service-name
+	```
+- To restart a daemon use:
+  ```
+	$ systemctl restart service-name
+	```
+	>[!note]
+	>A less disruptive command is `reload`, which instructs a daemon to reload its configuration.
+	
+>[!tip]
+>`service-name` refers to the name of a systemd unit, which is any resource that systemd knows how to operate and manage via configuration files, called *unit files* . 
+>If you do not know the name of the daemon you can use the `systemctl list-units` command, which will give list all the loaded and active units.
+
+## Checking the status or configuration of a daemon
+- You can check the status of a daemon with: 
+```
+$ systemctl status service-name
+```
+- To check the configuration of a daemon use:
+  ```
+	$ systemctl cat
+	```
+
+## Other Commands
+- To show network connections to a daemon use `ss`, which can be used to show listening network sockets to check if the network configuration works properly.
+  ```
+	# Show listening TCP sockets
+	$ ss -lnt
+	
+	# Show listening UDP sockets
+	$ ss -lnu
+	```
+- Use `ps` to show information on the currently running processes
