@@ -48,7 +48,7 @@
             }
           },
           {
-            "id": "c9c53082c963bf4e",
+            "id": "f7c0c9fa50fff7bf",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -186,7 +186,7 @@
               "state": {
                 "file": "Ansible.md",
                 "followCursor": false,
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
@@ -198,8 +198,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -213,13 +212,21 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "c9c53082c963bf4e",
+  "active": "13a0ddf43642bf82",
   "lastOpenFiles": [
     "Linux (System Administration).md",
     "Ansible.md",
+    "Software Defined Network-Network Automatisation.md",
+    "Number Systems.md",
+    "Organizations.md",
+    "Email.md",
+    "Bilder/Ansible/Behavioral Inventory Parameters.png",
+    "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
+    "H4CX0R/Nmap.md",
+    "Bilder/Ansible/Anatomy of a Playbook.png",
+    "Untitled.md",
     "Bilder/Ansible",
     "Bilder/Ansible/Vagrant Port forwarding.png",
-    "Software Defined Network-Network Automatisation.md",
     "Microsoft/Azure.md",
     "Bilder/Linux System Administration/Routing as an end host final network.png",
     "Bilder/Linux System Administration/Routing as an end host updated network.png",
@@ -233,8 +240,6 @@
     "Bilder/Software Defined Networks/Programmable ASICs.png",
     "Bilder/Linux System Administration/cron syntax.png",
     "Cloud.md",
-    "Bilder/Azure/Update Domains.png",
-    "Bilder/Azure/Fault Domains.png",
     "Network/(OSI) Open Systems Interconnection-Modell.md",
     "Bilder/Azure",
     "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
@@ -248,11 +253,6 @@
     "Network/Network topologies.md",
     "Network/Routing.md",
     "Network/TCP-IP Modell.md",
-    "H4CX0R/Wireshark.md",
-    "H4CX0R/TryHackMe.md",
-    "H4CX0R/Reconnaissance and Vulnerability Scanning.md",
-    "H4CX0R/Nmap.md",
-    "H4CX0R/Tcpdump.md",
     "Bilder/Entra ID",
     "Microsoft",
     "Bilder/Cloud",

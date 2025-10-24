@@ -67,7 +67,7 @@ The Linux filesystem is hierarchical single-root filesystem meaning at the top l
   ```
   $ cp /source/path /destination/path
   ```
-
+Str +c kopieren esc + . einfügen
 # Command Line Interface (CLI)
 With the CLI you can interact with the system using commands that are entered with a keyboard or *standard input (stdin)*. The source from stdin can be a file redirection, programs and other sources. 
 The output to these commands are displayed on the screen or *standard output (stdout)* and when an error occurs you receive a *standard error (stderr)*.
@@ -676,8 +676,28 @@ The `0` value indicates that IP forwarding is disabled, you can enable it
 After enabling IP forwarding the host acts as a router, but can only perform static routing so you need to use the `ip route` to configure routes.
 Options for dynamic routing are [Quagga ](https://www.nongnu.org/quagga/) and [BIRD](https://bird.network.cz/).  Additionally you can use [nftables](https://netfilter.org/projects/nftables/) to add *network address translation (NAT)* and *access control lists (ACLs)*.
 
-## Switching
+## Switching (Bridging)
 You can also configure a Linux machine to enable Layer 2 switching, acting as a switch.
+This is often used to connect a VM to a physical NIC, providing network connectivity to VMs.
+### Creating and Configuring
+To create a bridge use 
+```
+$ ip link add name bridge-name type bridge
+
+$ ip link add name br0 type bridge
+```
+
+This new bridge will have no interfaces attached to it and is marked as `down`, meaning you have to manually activate the interface with:
+```
+$ ip link set bridge-name up
+$ ip link set br0 up
+```
+
+To add interfaces use:
+```
+$ ip link set interface-name set master bridge-name
+$ ip link set ens3 set master br0
+```
 
 ## Pruning the System
 Pruning means to remove any unnecessary services and daemons from a system. 
