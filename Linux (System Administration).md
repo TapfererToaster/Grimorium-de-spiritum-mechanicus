@@ -693,11 +693,46 @@ $ ip link set bridge-name up
 $ ip link set br0 up
 ```
 
+To delete a bridge use:
+```
+$ ip link del bridge-name
+$ ip link del br0
+```
+
 To add interfaces use:
 ```
-$ ip link set interface-name set master bridge-name
-$ ip link set ens3 set master br0
+$ ip link set interface-name (set) master bridge-name
+$ ip link set ens3 (set) master br0
 ```
+
+To remove interfaces use:
+```
+$ ip link set interface-name nomaster
+$ ip link set ens3
+```
+
+>[!note] 
+>You can use the `ip` command to display the interfaces that are part of a bridge.
+>```
+>$ ip link list master bridge-name
+>$ ip link list master br0
+>```
+
+### Making Bridges permanent
+The commands above all create nonpersistent configurations. To make these permanent you have to have to save the configurations in a configuration file.
+On Debian you create configure a stanza in the `/etc/network/interfaces`:
+```
+iface br0 inet manual
+	up ip link set $IFACE up
+	down ip link set $IFACE down
+	bridge-ports ens3
+```
+
+> [!NOTE]
+> You could assign IP addresses to the bridge, but not to the member interfaces.
+> To assign a IP address use `inet static` or `inet dhcp`. 
+> Remember that you need to include the address, netmask and gateway, when configuring a static IP.
+> 
 
 ## Pruning the System
 Pruning means to remove any unnecessary services and daemons from a system. 
@@ -1279,7 +1314,16 @@ The package contains:
 > - looping
 > - calling other scripts from within a script
 
-## Creating Scripts
+## Bash scripts
+Every script starts with the *shebang*, which points to the location of bash itself. On most Linux distrobutions it can be found under `/usr/bin/bash` so the shebang is `#!/usr/bin/bash`.
+### Creating Scripts
+#### Script for Bridge and interface configuration
+Outline of the script:
+- Create the bridge
+- Move the IP address from the physical interface to the bridge 
+  (Remember that physical interfaces that are part of the bridge do not participate in IP-based traffic)
+- Add the physical interface to the bridge
+#### Script for backup
 Before writing a script it is important to outline what the script should do. 
 For example a backup script outline could be:
 - Create a tar file of the `/etc` directory
