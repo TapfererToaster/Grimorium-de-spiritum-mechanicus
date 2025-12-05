@@ -31,7 +31,7 @@ In a multicast transmission one device sends a message to a selected set of othe
 > [!important]
 > *Public addresses* are globally routed between ISP routers.
 > 
-> *Private addresses* are blocks of addresses that are used to address internal hosts within a network. These were introduced in 1996 with the [RFC 1918: Address Allocation for Private Internets](https://www.rfc-editor.org/rfc/rfc1918).
+> *Private addresses* are blocks of addresses that are used to address internal hosts within a network. These were introduced in 1996 with the [RFC 1918: Address Allocation for Private Internets](https://www.rfc-editor.org/rfc/rfc1918). (See also [RFC 6598](https://datatracker.ietf.org/doc/html/rfc6598))
 > 
 > | Network Address and Prefix | RFC 1918 Private Address Range |
 | -------------------------- | ------------------------------ |
@@ -228,7 +228,6 @@ The final field of the IPv4 header is the *Option field*. This field is optional
 
 # Subnetting
 *Subnetting* is a method of dividing an IP address block into multiple smaller *subnets (subdivided networks)* by assigning bits from the host portion to the network portion of the network address.
-
 ## Fixed-Length Subnet Masking (FLSM)
 ![[Fixed-Length Subnet Masking.png]]
 *Fixed-Length Subnet Masking (FLSM)* divides a address block into multiple subnets of equal size.
@@ -249,7 +248,7 @@ You could also divide the  `192.168.1.0/24` address block into four subnets.
 ### Exam Scenario
 ![[FLSM Exam.png]]
 You are given this network topology and the following tasks:
-1. Subnet the 172.25.190.0 /23 address block into equal subnets
+1. Subnet the 172.25.190.0 /23 address block into 4 equal subnets
 2. Identify the subnets and give the number of hosts
 3. Configure the first usable address of each subnet on R1's interfaces
 
@@ -282,7 +281,7 @@ R1(config-if)# ip address 172.25.191.129 255.255.255.128
 ![[VLSM Network.png]]
 
 The order in which the subnets should be assigned is: 
-1. Assign the largest sunnet at the start of the address block
+1. Assign the largest subnet at the start of the address block
 2. Assign the second-largest subnet after it
 3. Repeat the process until all subnets have been assigned
 

@@ -1316,13 +1316,47 @@ The package contains:
 
 ## Bash scripts
 Every script starts with the *shebang*, which points to the location of bash itself. On most Linux distrobutions it can be found under `/usr/bin/bash` so the shebang is `#!/usr/bin/bash`.
+
+### Piping
+In scripts you can use the pipe character `|` to use the output of one command as the input of the next command. 
 ### Creating Scripts
 #### Script for Bridge and interface configuration
-Outline of the script:
+**Outline of the script:**
 - Create the bridge
 - Move the IP address from the physical interface to the bridge 
   (Remember that physical interfaces that are part of the bridge do not participate in IP-based traffic)
 - Add the physical interface to the bridge
+
+```bash
+#!/usr/bin/bash
+
+# Create the bridge interface
+ip link add name br0 type bridge
+
+# Remove the route and IP address from the physical interface
+ip addr del 192.168.100.10/24 dev eth0
+
+# Add the IP address to the bridge
+ip addr add 192.168.100.10/24 dev br0
+
+# Add the physical interface to the bridge
+ip link set eth0 master br0
+```
+
+Script with piping:
+```bash
+# Get the first IP address from the physical interface
+IP_ADDR=$(ip --brief addr list eth0 | awk '{print $3}')
+
+# Remove the route and IP address from the physical interface
+ip addr del $IP_ADDR dev eth0
+
+# Add the IP address to the bridge
+ip addr add $IP_ADDR dev br0
+
+# Add the physical interface to the bridge
+ip link set eth0 master br0
+```
 #### Script for backup
 Before writing a script it is important to outline what the script should do. 
 For example a backup script outline could be:

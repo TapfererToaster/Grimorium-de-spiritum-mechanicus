@@ -5,6 +5,31 @@ Cloud computing allows the user to up- or downscale the services or infrastructu
 >[!note]
 >Cloud services fall under *operational expenditure (OpEx)*, meaning you pay a regular sum for the resources you use.
 >The opposite is *capital expenditure (CapEx)*, where you pay a one-time, up-front expenditure.
+
+# NIST Definition
+The National Institute of Standards and Technology (NIST) has a multifaceted definition that describes characteristics of cloud computing and services as well as deployment models.
+Essential **characteristics** of cloud computing:
+- *On-demand self-service*:
+  Users should be able to provision their own resources from the cloud provider as needed, without needing to involve human interaction (service ticket).
+- *Broad network access*:
+  Cloud environments are inherently networked environments, accessible over the network. Without network access, cloud computing is not possible.
+- *Resource pooling*:
+  Cloud provider resources are pooled and served to multiple tenants automatically. This includes physical and virtual resources and applies not only to computing capacity but also to storage and networking.
+- *Rapid elasticity*
+  Cloud resources should be able to scale "infinitely", scaling up or down, based on demand - even automatic, in some cases
+- *Measured service*:
+  Cloud resources are metered ad users are charged for what they use. Usage can be monitored, controlled and reported
+
+Three service models:
+- *Software as a Service (SaaS)*
+- *Platform as a Service (PaaS)*
+- *Infrastructure as a Service (IaaS)*
+
+Deployment models:
+- *Private cloud*
+- *Community cloud*
+- *Public cloud*
+- *Hybrid cloud*
 # Shared Responsibility Model
 With a traditional datacenter the company is responsible for maintaining the physical space, ensuring security und maintaining and replacing server and the IT department is responsible for the digital infrastructure and the software.
 When using cloud services the responsibilities are split between the cloud provider and the consumer depending on what service is used:
@@ -14,12 +39,12 @@ When using cloud services the responsibilities are split between the cloud provi
 
 ![[Azure shared responsibility.png]]The cloud provider is always responsible for the physical space and the hardware, while the consumer is always responsible for administrative task including the data stored and who and what device can access the cloud.
 # Evolution of the Cloud Model and Architecture
-## Cloud Models
+## Evolution
 ![[Evolution of Cloud Models.png]]
 
 >[!note] Public and Edge Computing
->- Public cloud has a centralized data collection, processing and analysis approach.   
->- Edge computing has a distribute computing approach where data is collected, processed and analyzed locally. This provides better latency and can be approached when a company has strict compliance on where data is stored and processed.
+>- *Public cloud* has a centralized data collection, processing and analysis approach.   
+>- *Edge computing* has a distribute computing approach where data is collected, processed and analyzed locally. This provides better latency and can be approached when a company has strict compliance on where data is stored and processed.
 > 
 
 ## Cloud Architecture
@@ -158,4 +183,9 @@ Other SaaS solutions:
 ## Analogy
 ![[Cloud Services Analogy.png|660x318]]
 
+# Cloud Networking Building Blocks
+## Logical network isolation
+*Overlay networks* are created to isolate logical networks and their traffic from one another and the physical network. Encapsulation protocols like VXLAN, Generic Routing Encapsulation (GRE) and others are used for this. 
 
+## Public and private addressing
+[[IPv4#Public and Private Addresses|Public and private IP addresses]] 

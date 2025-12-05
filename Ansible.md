@@ -1340,11 +1340,9 @@ Remove the old host key and add the new key:
 $ ssh-keygen -R host-IP
 $ ssh-keyscan host-IP >> ~/.ssh/known_hosts
 ```
-
-
-
-
-
 # Collection
 Playbooks und roles können zu einer collection zusammengefügt werden genannt Galaxies
 Nach Collections suchen Google galaxy.ansible.com
+
+
+
