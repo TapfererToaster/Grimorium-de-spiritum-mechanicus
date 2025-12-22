@@ -25,26 +25,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Container.md",
+                "file": "Programming Languages/Python.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Container"
-            }
-          },
-          {
-            "id": "9bca8f71e339a834",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Cloud.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Cloud"
+              "title": "Python"
             }
           },
           {
@@ -60,9 +46,23 @@
               "icon": "lucide-file",
               "title": "Ansible"
             }
+          },
+          {
+            "id": "0aadd5045fe024bd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Linux (System Administration).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Linux (System Administration)"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -212,24 +212,27 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "7e2422b13fea0407",
+  "active": "f7c0c9fa50fff7bf",
   "lastOpenFiles": [
+    "Linux (System Administration).md",
+    "Ansible.md",
+    "Network/Protocols/(STP) Spanning Tree Protocol.md",
+    "Programming Languages/Python.md",
+    "Bilder/Python",
+    "Bilder/Python/Python Datatypes.png",
+    "Container.md",
     "Programming Languages/Go.md",
     "Software Defined Network-Network Automatisation.md",
     "Virtualization.md",
     "Network/IPv4.md",
     "Subnetting.md",
-    "Programming Languages/Python.md",
     "Programming Languages/C.md",
     "Programming Languages/C-Sharp.md",
     "H4CX0R/TryHackMe.md",
     "Cloud.md",
-    "Ansible.md",
     "Network/(OSI) Open Systems Interconnection-Modell.md",
     "Network/(VLAN) Virtual LAN.md",
-    "Container.md",
     "chatGPT.md",
-    "Linux (System Administration).md",
     "Excalidraw/Drawing 2025-05-05 11.00.01.excalidraw.md",
     "Network/TCP-IP Modell.md",
     "Network/Protocols/(DHCPv6).md",
@@ -239,7 +242,6 @@
     "Network/Protocols/(DHCPv4) Dynamic Host Configuration Protocol.md",
     "Number Systems.md",
     "Organizations.md",
-    "Email.md",
     "Bilder/Ansible/Behavioral Inventory Parameters.png",
     "Bilder/Ansible/Anatomy of a Playbook.png",
     "Bilder/Ansible",
@@ -251,14 +253,12 @@
     "Bilder/Software Defined Networks/Bare Metal Switching.png",
     "Bilder/Software Defined Networks",
     "Bilder/Software Defined Networks/Programmable ASICs.png",
-    "Bilder/Linux System Administration/cron syntax.png",
     "Bilder/Azure",
     "Bilder/Entra ID",
     "Microsoft",
     "Bilder/Cloud",
     "bilder/Cloud",
     "Bilder/LAN Security Concepts/desktop.ini",
-    "Bilder/LAN Security Concepts",
-    "bilder/LAN Security Concepts"
+    "Bilder/LAN Security Concepts"
   ]
 }
