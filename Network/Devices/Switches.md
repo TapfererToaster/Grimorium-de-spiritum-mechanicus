@@ -488,6 +488,8 @@ To enable port security navigate to the port and use the `switchport port-securi
 
 ```
 Switch(config)# interface f0/1
+# if not already configured
+Switch(config-if)# switchport mode access/trunk
 Switch(config-if)# switchport port-security
 ```
 
@@ -499,4 +501,11 @@ Use `show port-security interface` to display the current security settings of a
 Switch# show port-security interface f0/1
 ```
 #### Limit and Learn MAC Addresses
+Set a maximum number of MAC addresses allowed on a port use:
+```
+Switch(config-if)# switchport port-security maximum value
+
+S1(config)# interface f0/1
+S1(config-if)# switchport port-security maximum 50
+```
 

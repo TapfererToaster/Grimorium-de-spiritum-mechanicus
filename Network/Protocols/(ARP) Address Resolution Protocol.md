@@ -21,4 +21,3 @@ When the destination IP address is on a remote network the destination MAC addre
 When the router receives the packet it de-encapsulates the [[(OSI) Open Systems Interconnection-Modell#2. Datensicherungsschicht (Data Link, Layer 2)|Layer 2]] information. It then examines the IP address to determine the best next-hop device and encapsulates the IPv4 packet in a new data link frame. The destination of the frame is the MAC address of the next-hop device and the source is the MAC address of the interface facing the internet of the router.
 When the packet reaches the network of the destination device the router it again de-encapsulates the packet and encapsulates the packet with the destination MAC of the device and the source MAC of the router.
 # Broadcast Domain
-W

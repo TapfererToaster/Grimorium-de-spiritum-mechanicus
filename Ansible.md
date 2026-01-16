@@ -1,6 +1,5 @@
 # Install
 pip --install ansible
-pip ist Distro unabhängig
 # Vagrant
 A login into the VM with `vagrant ssh` lets you interact with the Bash shell, but Ansible needs to connect to the VM via regular SSH. 
 To achieve this you need to output the SSH configuration of Vagrant:
@@ -1341,8 +1340,7 @@ $ ssh-keygen -R host-IP
 $ ssh-keyscan host-IP >> ~/.ssh/known_hosts
 ```
 # Collection
-Playbooks und roles können zu einer collection zusammengefügt werden genannt Galaxies
-Nach Collections suchen Google galaxy.ansible.com
+
 
 
 

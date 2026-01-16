@@ -67,7 +67,8 @@ The Linux filesystem is hierarchical single-root filesystem meaning at the top l
   ```
   $ cp /source/path /destination/path
   ```
-Str +c kopieren esc + . einfügen
+Ctrl +c copy esc + . paste
+
 # Command Line Interface (CLI)
 With the CLI you can interact with the system using commands that are entered with a keyboard or *standard input (stdin)*. The source from stdin can be a file redirection, programs and other sources. 
 The output to these commands are displayed on the screen or *standard output (stdout)* and when an error occurs you receive a *standard error (stderr)*.

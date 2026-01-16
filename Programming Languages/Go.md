@@ -1,7 +1,4 @@
 [Learn to become a Go developer](https://roadmap.sh/golang)
-
->[!tip] Übungen aus LF5 in Go schreiben
-
 # Go the Toolchain
 ## Package Management
 `go mod` ("Go modules") is Go's built in package/dependency manager
