@@ -1,5 +1,4 @@
-# Search Skill
-## Specialized Search Engines
+# Specialized Search Engines
 - https://www.shodan.io/
 - https://search.censys.io/
 - https://www.virustotal.com/
@@ -11,3 +10,5 @@
 - https://www.exploit-db.com/
 - https://github.com/ (can contain many tools related to CVEs, along with proof-of-concept (PoC) and exploit codes)
 
+# 
+- DHCP exhaustion

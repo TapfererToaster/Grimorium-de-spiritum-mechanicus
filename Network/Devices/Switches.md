@@ -470,8 +470,9 @@ SW1(config)# spanning-tree vlan 1 root primary
 >This method is not recommended as configuring a switch as `secondary` does not guarantee that it will be set as the root bridge if the original fails. Another reason is that setting a switch to `primary` does not always work as the command cannot set the priority to 0.
 >The best method to set a switch as the root bridge is by setting the priority to 0.
 ## Security Configuration
+### Port Security
 
-### Secure Unused Ports
+#### Secure Unused Ports
 It is best practice to disable all unused switch ports, by either navigating to each individual unused port or by defining a range of ports and then using the `shutdown` command:
 ```
 Switch(config)# interface range fa0/8 - 24
@@ -480,7 +481,7 @@ Switch(configif-range)# shutdown
 >[!note]
 >If the switch ports are needed simply activate them with the `no shutdown` command.
 
-### Enable Port Security
+#### Enable Port Security
 Port security limits the number of valid MAC addresses allowed on a port.
 To enable port security navigate to the port and use the `switchport port-security` command.
 >[!important]
@@ -494,13 +495,13 @@ Switch(config-if)# switchport port-security
 ```
 
 >[!warning]
->If more than device is connected to a port after port-security is enabled, the port will transition to the `error-disabled` state
+>If the switch detects multiple unique MAC addresses on the port, the port transitions to an `error-disabled` state and blocks traffic on it. Further all dynamically learned addresses will be forgotten. 
 
 Use `show port-security interface` to display the current security settings of a port.
 ```
 Switch# show port-security interface f0/1
 ```
-#### Limit and Learn MAC Addresses
+#### Limit MAC Addresses
 Set a maximum number of MAC addresses allowed on a port use:
 ```
 Switch(config-if)# switchport port-security maximum value
@@ -508,4 +509,137 @@ Switch(config-if)# switchport port-security maximum value
 S1(config)# interface f0/1
 S1(config-if)# switchport port-security maximum 50
 ```
+#### Learn MAC Addresses
+On a secure port the switch can learn MAC addresses in three ways:
+- **Manually Configures**
+  The administrator manually configures a static MAC address with the following command for each address
+  ```
+  Switch(config-if)# switchport port-security mac-address macAddress (vlan vlanName)
+  Switch(config-if)# switchport port-security mac-address aa:bb:cc:11:22:33 (vlan HQ)
+  ```
+- **Dynamically Learned**
+  When the `switchport port-security`command is entered, the current source MAC for the device connected to the port is automatically secured but is not added to the startup configuration. If the switch is rebooted, the port will have to re-learn the device's MAC address.
+- **Dynamically Learned Sticky**
+  With this command the switch learns the MAC address dynamically and "stick" it to the running configuration. When saving the running config the MAC address is saved to NVRAM.
+  ```
+  Switch(config-if)# switchport port-security mac-address sticky
+  ```
 
+>[!note]
+>A MAC address learned on a `port-security` enabled port is called a *secure MAC address*.
+
+#### Port Security violation modes
+Security *violation modes* are used to configure the behavior of a `port-security` enabled port when a security violation occurs.
+These modes are:
+- **shutdown**
+  the port is shut down and all communication is stopped
+- **restrict**
+  frames that violate the MAC address limit are discarded, but communication with already known MAC is continued, the violation counter is incremented with each violating frame, generates a Syslog message and SNMP Traps/Informs
+- **protect**
+  frames that violate the MAC address limit are discarded, communication is continued and the violation counter is not incremented
+
+To configure a violation mode on a port use:
+```
+S1(config)# interface f0/1
+S1(config-if)# switchport port-security violation restrict
+```
+#### Secure MAC address aging
+>[!note] Reminder
+>MAC address aging refers to the time a MAC address is stored in the MAC address table before it is discarded. The timer resets whenever a frame from the corresponding address is received.
+
+By default secure MAC addresses do not age and stay in the address table as long as the port it was learned on stays up.
+To enable secure MAC address aging use 
+```
+SW1(config)# interface f0/1
+SW1(config-if)# switchport port-security aging time minutes
+
+SW1(config-if)# switchport port-security aging time 5
+```
+
+ **Secure MAC address aging types**
+The default aging type is *absolute* meaning that the timer is not reset upon receiving a frame from the same MAC address.
+You can change this by switching to the *inactivity* aging type, which resets the timer.
+```
+SW1(config)# interface f0/1
+SW1(config-if)# switchport port-security aging type aging-type
+
+SW1(config-if)# switchport port-security aging type inactivity
+```
+
+ **Static Secure MAC Address Aging**
+Manually configured static MAC address do not age out and usually need to be manually removed. However this can be changed with:
+```
+SW1(config)# interface f0/1
+SW1(config-if)# switchport port-security aging static
+```
+
+#### Verify Port Security
+- Port Security for all interfaces:
+  ```
+  S1# show port-security
+  ```
+- **Port Security for a Specific Interface**:
+  ```
+  S1# show port-security interface interface
+  
+  S1# show port-security interface fastethernet 0/1
+  ```
+- **Verify Learned MAC Addresses**
+  ```
+  S1# show run interface interface
+  
+  S1# show run interface fa0/1
+  ```
+- **Verify Secure MAC Addresses**
+    ```
+  S1# show port-security address  
+    ```
+
+### Mitigating VLAN Attacks
+VLAN hopping can be accomplished  in three ways:
+- Spoofing DTP messages from the attacking host to cause the switch to enter trunking mode. From here, the attacker can send traffic tagged with the target VLAN and the switch then delivers the packets to the destination.
+- Introducing a rogue switch and enabling trunking. The attacker can then access all the VLANs on the victim switch from the rogue switch.
+- Another type of VLAN hopping attack is a double-tagging attack. 
+
+#### Steps to mitigate VLAN hopping
+1. Disable DTP (auto-trunking) negotiations on non-trunking ports by using the `switchport mode access` interface configuration command.
+2. Disable unused ports and put them in an unused VLAN
+3. Manually enable the trunk link on a trunking port by using the `switchport mode trunk` command
+4. Disable DTP (auto-trunking) negotiations n trunking ports by using the `switchport nonegotiate` command
+5. Set the native VLAN to a VLAN other than VLAN 1 by using the `switchport trunk native vlan vlan-number` command.
+
+### Mitigating DHCP Attacks
+In a DHCP poisoning attack an attacker configures a rogue DHCP server that leases IP addresses so the clients uses it as their default gateway. 
+
+#### DHCP Snooping 
+DHCP snooping is a security feature on Cisco switches that examines and filters DHCP messages. 
+To enable and activate DHCP snooping use:
+```
+SW1(config)# ip dhcp snooping
+SW1(conifg)# ip dhcp snooping vlan vlan-id
+
+SW1(conifg)# ip dhcp snooping vlan 4
+```
+
+You can also activate DHCP Snooping on multiple VLANs, as it is advised to enable DHCP snooping in every VLAN that has hosts using DHCP.
+```
+SW1(config)# ip dhcp snooping vlan 1-10
+SW1(config)# ip dhcp snooping vlan 1,2,3-5,6,7-10
+```
+
+==How DHCP snooping works==
+
+**Trusted and untrusted ports**
+Packets received on untrusted ports are filtered by DHCP snooping and all ports are untrusted by default. Frames received on trusted ports are allowed, but you have to manually configure each trusted port with:
+```
+SW1(conifg)# interface g0/1
+SW1(config-if)# ip dhcp snooping trust
+```
+
+Ports that face towards the DHCP server should be trusted and DHCP snooping will forward DHCP messages on those ports without inspection.
+Ports that face away from the server should be untrusted and will be inspected as follows:
+- If it is a DHCP server (OFFER, ACK or NAK) message discard it
+- If it is a DHCP client message (DISCOVER, REQUEST, DECLINE or RELEASE) inspect it further 
+- If a client successfully leases an IP address, create a new entry in the DHCP Snooping binding table 
+
+### Dynamic ARP Inspection

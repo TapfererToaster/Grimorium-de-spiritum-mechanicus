@@ -17,7 +17,7 @@ The communication could be a web browser communicating with a web server.
 > This layer is parallel to the [[(OSI) Open Systems Interconnection-Modell#1. Physische Schicht (Physical, Layer 1)|OSI Layer 1]]
 
 In IEEE 802.3 [[Ethernet]] defines connectors and cable types, as well as how data should be encoded into electrical or light signals among other minutiae about how to communicate.
-IEEE 802.11 Wi-Fi defines what radio waves should be modulated to encode data, etc.
+[[WLAN#IEEE 802.11 standards|IEEE 802.11]] defines what radio waves should be modulated to encode data, etc.
 ## Layer 2: Data Link Layer
 >[!definition] Definition
 >The **Data Link Layer** defines how data is addressed and is responsible for *hop-to-hop* delivery of messages, with the use of MAC addresses.

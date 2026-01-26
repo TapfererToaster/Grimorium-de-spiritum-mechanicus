@@ -98,5 +98,73 @@ Azure resources are placed into:
 	  - you cannot define the replication settings governing how resources are distributed across zones
 - **Non-regional services**:
 	- Services are available in all geographies and are not affected by zone or region wide outages
+
+![[Availability Zones.png]]
+
+>[!note]
+>The availability of resources is provided by each zone using independent power, cooling and networking. A outage in one zone does not affect the availability of resources in other zones.
+>To protect against an entire region outage, resources can be replicated in a secondary region.
 ### Proximity Placement Groups
 Proximity Placement Groups are a logical entity and an architectural component that ensures low latency by placing compute resources physically adjacent and collocated within the same physical data center.
+In combination with *Availability Sets* you can put the compute resources into different racks, to resolve potential issues with outage and failures. 
+![[Proximity Placement Groups.png]]
+
+>[!note]
+>A few things concerning proximity placement groups:
+>- They are Azure resources and need to be created before they can be used
+>- They can be used wit VMs, VM Scale Sets and availability sets
+>- When creating the compute resource, specify the proximity placement group previously created
+>- To move existing compute resources into a proximity placement group, the resource will need to be stopped
+>- They are set at the resource level, not the individual virtual machine level, for availability and VM Scale Sets
+>- Workloads such as SAP HANA with SAP NetWeaver is an example of the importance of having the machines separated for high availability/SLA but close enough for minimum latency
+
+# Resource Management
+The managing of data and workloads should include the following:
+- **Availability**
+  Managed though redundancy, replication and traffic management
+- **Protection**
+  Managed through backup and disaster recovery
+- **Security**
+  Managed through threat protection and security posture management
+- **Configuration**
+  Managed through automation, scripting and update management
+- **Governance**
+  Managed through access control, compliance and cost management
+- **Monitoring**
+  Managed through the collection of security incidents, events resource health, performance metrics, logs and diagnostics
+
+>[!note]
+>The foundation for management within Azure is the *Azure Resource Manager (ARM)* API, which is also the management deployment service for Azure. It provides a management layer and orchestration engine that processes all requests for Azure.
+>
+## Management Scopes 
+*Role-Based Access Control (RBAC)* and Azure Policies can be targeted at the following levels:
+- Management group level 
+- Subscription level
+- Resource group level
+- Resource level
+
+![[Management Scopes.png]]
+
+### Management Groups
+*Management Groups* are logical container that group multiple Azure subscriptions. Allowing to govern and manage access control and policies.
+![[Management groups.png]]
+Management groups have the following limitations:
+- They can only contain other management groups and subscriptions, not resource groups or resources
+- The scope is per tenant not across tenants
+- The Parent management group cannot be deleted or moved, only renamed
+- Only one parent management group is supported and only one parent hierarchy is a single tenant
+- Supports up to 1000 child management groups
+- Up to six hierarchy levels are supported
+
+### Subscriptions
+*Subscriptions* group together resources that share the same billing and access controls.
+![[Subscription.png]]
+The subscription should be created in a new or existing Entra ID tenancy as it is the foundation and starting point. 
+
+A few things to consider:
+- Subscriptions cannot be merged, but can be moved into other subscriptions.
+- If a subscription is is deleted, all resources within the subscription are deleted; if a subscription expires the resources remain
+- The billing owner can be changed
+- You should create the tenancy, subscription and resource groups in that order
+
+**Relationship between Tenants and Subscriptions**

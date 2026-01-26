@@ -118,7 +118,7 @@ In *contention-based multiple access networks*, all nodes are operating in half-
 This control method was used by legacy Ethernet LANs where hubs were employed.
 The workings behind it are, that a computer determines if a device is currently transmitting data, by checking if the signal amplitude is higher than normal on the media or the NIC compares data transmitted with data received.
 #### Carrier sense multiple access with collision avoidance (CSMA/CA)
-This control method is used by WLAN and attempts to avoid collisions.
+This control method is used by [[WLAN]] and attempts to avoid collisions.
 Each device that transmits includes the time duration that it needs for the transmission and all other wireless devices receive this information and know how long the the medium will be unavailable, and wait until it is available.
 ### Controlled access
 In a *controlled-based multiple access network*, each node has its own time to use the medium. These deterministic types of legacy networks are inefficient because a device must wait its turn to access the medium.
