@@ -60,7 +60,7 @@ There are also *non-regional services*, such as Traffic Manager and Front Door t
 ## Sovereign Regions
 Azure provides *sovereign regions*, these are isolated cloud-platform regions that run dedicated hardware and isolated networks where they are located. These support greater compliance for specific markets and have their own portals with different URLs and service endpoints in DNS.
 
-## Availability Components
+## Availability Solutions
 Microsoft is responsible to provide a range of availability options, that the customer has to implement according to their availability strategy that meets the Service-Level Agreement (SLA). 
 >[!note]
 >MS SLAs are based on financial compensation when the defined SLA is not met.
@@ -167,4 +167,171 @@ A few things to consider:
 - The billing owner can be changed
 - You should create the tenancy, subscription and resource groups in that order
 
+**Multiple Subscriptions**
+An organization can have multiple subscriptions within the same tenant or another tenant the organization owns. 
+### Resource Group
+*Resource Group* is a logical container that groups together resources that are to be managed as a group.
+![[Resource Group.png]]
+
+The basis for the group could be that the resources share the same life cycle, dependencies, access control or management requirements.
+The resources could also be grouped by environment, business unit, region or other combinations.
+![[Resource Group groupings.png]]
+
+**Characteristics**:
+- Resource Groups work at the management plane level
+- Resource groups contain metadata about the resources they contain
+- Deleting a resource group will remove all resources within it
+
+**Organization**
+When planing to create a Azure resource, you must first define access and billing, as this will shape the subscription and resource group strategy. 
+The order these elements should be created is:
+- Tenancy
+- Subscription
+- Management groups
+- Resource groups
+### Resource
+A *Resource* is a billable item and the building block of all services and solutions in Azure. Each resource has an ID with a billing meter that calculates the amount consumed and billing rate.
+
+Things to observe:
+- Each resource can be associated with only one resource group
+- Resources must belong to a resource group and con only exist in a single group, but can be moved between resource groups
+- Resources can interact with other resources in the same groups. other groups and subscriptions
+- Resources work at the data plane level
+- Resources inherit all permissions set at the resource group level they belong to 
+- When adding new resources to a resource group, they inherit those permissions ans any access assignments
+- When moving resources, the resources lose the permissions of the resource group they belonged to and inherit those of the new resource group 
+
+### Relationships
 **Relationship between Tenants and Subscriptions**
+![[Relationship between Tenants and Subscriptions.png]]
+- **Entra ID tenant**
+  Contains users, groups and M365 subscriptions
+- **Azure subscription**
+  Contains resource groups, including resources
+
+**Subscription**
+- Each Azure subscription can be associated with only one Entra ID tenant in a parent-child relationship
+- Each subscription can have multiple resource groups, but each resource group can be part of only one subscription
+- The billing owner can be changed
+- A subscription can be moved to a different Entra ID tenant
+
+**Resource**
+- Each resource can be associated with only one resource group
+
+**User**
+- Each user can be associated with only one Entra ID tenant
+- Each user can access more than one Entra ID tenant
+
+**Group**
+- Each group can be associated with only one Entra ID tenant
+
+**M365 subscription**
+- Each subscription can be associated with only one Entra IF tenant (a domain)
+
+## Azure Resource Manager (ARM)
+ARM is the deployment and management service for Azure, it provides a control and management layer for the creation, update and deletion of resources as well as control access, application of policy, governance and compliance. 
+![[ARM architecture.png]]
+
+ARM provides the following:
+- Deploy, manage and monitor as it pertains to resource groupings rather than individual resources
+- Access control and policies at the resource group level that are inherited by the resources in that group
+- Application of tags to resources for billing logical grouping and management 
+- Repeatable life cycle deployment that result in a consistent state
+- Use of deployment template files to define the deployment of resources
+- Creation of resource dependencies
+
+- **Resource provider**
+  Services that contains and provides Azure resources; f.e. a book is a reading resource and the library is the provider
+- **Templates**
+  [[(JSON) JavaScript Object Notation|JSON]] or Bicep files providing repeatable and automated deployment
+
+# Resources
+## Compute Resources
+>[!note]
+>The term "compute resource" means "a platform to execute code on" and is used to run software and process data.
+
+The following compute resources are available on Azure:
+- [[Virtual Machines]]
+- [[Container]]
+- App Services
+- Functions
+- Azure Virtual Desktop
+
+### Virtual Machines
+Azure has different VM types, each tailored to a different use case and workload.
+The types are broken down into categories and family series, which are identified by a alphabetic character. A naming convention is also used to describe the intended use of the VM.
+Some examples are:
+- Subfamilies
+- The number of virtual CPUs (vCPUs)
+- Additive features
+- Versions
+
+**Familiy Series**
+- **General purpose** (A, B, D family):
+  VMs have a balanced CPU-to-memory ratio and are best suited for testing and development (A series only), burstable workloads (B series only) and general-purpose workloads (D series only).
+- **Memory optimized** (E, M family):
+  VMs have a high memory-to-CPU ratio and best suited for relational databases, in-memory analytics and workloads where bottlenecks originate in the memory
+- **Storage optimized** (L family):
+  VMs have high disk throughput and I/O and are best suited for data analytics, data warehousing and workloads there bottlenecks relate to the disk
+- **GPU optimized** (N family):
+  VMs have graphics processing units and are best suited for compute-intensive graphics- / gaming intensive, visualization and video conferencing / streaming workloads
+- **High performance** (H family):
+  VMs have powerful CPUs offering high-speed throughput network interfaces and are best suited compute and network workloads like SAP HANA
+
+**Naming Convention**
+```
+[Family] + [Sub-family] + [# of vCPUs] + [Additive Features] + [Version]
+```
+ 
+- **Family**:
+  The VM family series
+- **Sub-family**:
+  This represents the specialized VM differentiations
+- **Number of vCPUs**:
+  Number of vCPUs of the VM
+- **Additive Features**:
+	- *a*: AMD-based CPU
+	- *d*: VM with a local temp disk
+	- *i*: Isolated size
+	- *l*: low memory size
+	- *m*: memory-intensive size
+	- *s*: Premium Storage capabilities
+	- *t*: tiny memory size
+- **Version**:
+  Version of the VM family series
+
+>[!note]
+>Examples:
+>- B2ms: B series, 2 CPUs, memory intensive, Premium Storage capable
+>- D4ds v5: D series, 4 CPUs, local temp disk, Premium Storage capable, version 5
+
+#### Deployment Considerations
+![[VM deployment considerations.png]]
+When deploying VMs on Azure you should take broader considerations.
+- **Additional VM resources**
+  A VM has a vCPU and memory, but you have to provide an OS, software, storage, networking, connectivity and security for the VM
+- **Location and data residency**
+  Not all VM types and sizes are available in all regions
+- **VM quota limits**
+  Each Azure subscription has quota limits that limit the number of VMs, the VMs total cores and VMs per series
+- **Monitoring**
+  It is very important to be able to monitor your resources
+- **Backup**
+  Microsoft does not automatically back up the OS or software running on the VMs 
+- **Update Management**
+  Microsoft does not automatically update the OS or software running on the VMs
+- **Availability**
+  The two components addressing the availability SLA requirements are availability sets and availability zones. The VMs will have downtime and by default Microsoft will not provide availability zones or sets
+- **Scalability**
+  The ability to handle increased loads while still being available. VMs typically do not support scaling, however IaaS like Scale Set can provide this functionality 
+  >[!note] 
+  >Scale set is an IaaS with "auto-scaling" for VM-based workloads such as web and application services. You specify the number of VMs and OS type to be deployed in the Scale Set. These provide multiple fault domains and update domains as they are automatically deployed and protect against data center failures.
+  >This provides automatic scaling, load balancing, availability, and fault tolerance.
+  
+### Container
+The container services are described as:
+- **Azure Container Instances (ACI)**: Platform as a Service for containers running in Azure
+- **Azure Container Apps (APA)**: Like ACI, but provides scaling and load balancing
+- **Azure Kubernetes Service (AKS)**: Container hosting platform and orchestration service for managing containers
+
+#### Azure Container Instances (ACI)

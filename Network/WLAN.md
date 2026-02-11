@@ -123,6 +123,39 @@ Communicating via an AP over the air adds complexity that requires additional ad
 >In this example PC1 communicates with PC2 via the AP.
 >![[802.11 Frame Format example.png]]
 
+## Message Types
+802.11 defines three main message types:
+- **Management**
+  Used to establish communications in the wireless LAN
+  - *Probe*
+  - *Beacon*
+  - *Authentication*
+  - *Association*
+  - *Disassociation*
+- **Control**
+  Used to facilitate the delivery of frames over the medium
+  - *Request-to-send (RTS)*
+  - *Clear-to-send (CTS)*
+  - *Acknowledgement (Ack)*
+
+>[!note]
+>RTS and CTS are used for asking and granting permission to transmit a frame, which helps to reduce collisions. 
+>Modern networks usually do not use it as it adds additional overhead; for each data frame a RTS and CTS frame must be transmitted.
+>![[RTS-CTS Example.png]]#
+
+- **Data**
+  Used to carry data payloads, typically IPv4/IPv6 packets
+### Client Association Process
+Before a client can send and receive traffic from an AP it must associate itself with the AP. And before the client can associate itself with the AP, the client has to authenticate itself. 
+
+![[Client Association Process.png]]
+
+For communication between the client and AP to beginn they have to know the other is within range.
+There are two ways:
+- *Active scanning*
+ The client constantly sends probe requests and listens for probe responses from the AP
+ - *Passive scanning*
+   The client listens for beacon messages from the AP; the AP sends beacon messages periodically to advertise each BSS
 
 # Service Sets
 A *service set* is a group of devices that operate on the same WLAN, sharing the same *service set identifier (SSID)*, a human-readable label that identifies the service set.

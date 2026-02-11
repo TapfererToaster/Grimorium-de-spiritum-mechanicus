@@ -10,7 +10,7 @@ The Linux filesystem is hierarchical single-root filesystem meaning at the top l
 | `/`       | root filesystem, only contains other directories                    |
 | `/bin`    | binaries directory, contains executable files. Points to `/usr/bin` |
 | `/dev`    | device directory, contains device files to address periherals       |
-| `/etc`    | Contains system, configuration files for users and services         |
+| `/etc`    | Contains system and configuration files for users / services        |
 | `/home`   | Users' home directories                                             |
 | `/lib`    | System libraries files, points to `/usr/lib`                        |
 | `/media`  | Directory for mounting media (USB drives, DVD disks, ...)           |
