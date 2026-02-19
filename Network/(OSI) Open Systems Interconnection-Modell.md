@@ -42,7 +42,7 @@ Folgende Aufgaben gehören zu dieser Schicht:
   definiert die Zugriffskontrolle der Netzwerkgeräte
   >[!info]
   >Schicht 2 Switches versenden Frames mithilfe der MAC Adresse der Geräte
-- **Datenframing**
+- **Dataframing**
   encapsulating data (Layer 3 *packets*) into Layer 2 *frames*, which will be send in Layer 1
 - **Fehlererkennung**
   nutzt das CRC-Feld um zu prüfen ob Frames korrekt empfangen wurden and rejects corrupt frames
@@ -63,23 +63,9 @@ At each hop along the path, a router performs the following Layer 2 functions:
 ![[Data-Link Sublayers.png]]
 ### Media Access Control (MAC) Sublayer
 
-#### Ethernet Standards of the MAC sublayer
-![[Data-link Ethernet MAC sublayer.png]]
-**Data Encapsulation**
-[IEEE 802.3](https://en.wikipedia.org/wiki/IEEE_802.3) data encapsulation includes the following:
-- **Ethernet frame**:
-   Internal structure of the [[Ethernet#Frames|Ethernet frame]], fields within the frame are delimited by delimiting bits that provide synchronization between the transmitting and receiving nodes 
-- **Ethernet Addressing**:
-   The frame includes a source and destination MAC address to deliver the Ethernet frame from one Ethernet NIC to another Ethernet NIC on the same LAN
-- **Ethernet Error detection**: 
-  The frame includes a *frame check sequence (FCS)* trailer for error detection
+#### Standards of the MAC sublayer
+- [[Ethernet#Sublayers|Ethernet Standard]] 
 
-**Accessing Media**
-IEEE 802.3 also includes the specification, how different Ethernet communications standards over different media (copper, fibre, ...)
-- IEEE 802.3u Fast Ethernet
-- IEEE 802.3z Gigabit Ethernet over Fiber
-- IEEE 802.3ab Gigabit Ethernet over Copper
-- IEEE 802.3ae 10 Gigabit Ethernet over Fiber
 #### MAC Addresses
 **Characteristics**
 MAC addresses are 6 bytes or 48 bits long and are written using the [[Number Systems#Hexadecimal| Hexadecimal Number System]].

@@ -2,9 +2,10 @@
 
 Ethernet is a LAN technology, which uses [[Cables, Connectors and Ports#Copper Twisted-Pair Connections|twisted-pair]] ,[[Cables, Connectors and Ports#Fiber-optic connections| fibrer-optics]] links and coaxial cables.
 It operates in the [[(OSI) Open Systems Interconnection-Modell#2. Datensicherungsschicht (Data Link, Layer 2)|data link]] and the [[(OSI) Open Systems Interconnection-Modell#1. Physische Schicht (Physical, Layer 1)|physical layer]] of the OSI-Model and is defined in the IEEE 802.2 and 802.3 standards.
-
-**Ethernet Standards of the MAC sublayer**:
+# Sublayers
 ![[Data-link Ethernet MAC sublayer.png]]
+Ethernet operates on the [[(OSI) Open Systems Interconnection-Modell#Media Access Control (MAC) Sublayer|MAC Sublayer]] of the data link layer, which is responsible for data encapsulation and accessing the media.
+
 **Data Encapsulation**
 [IEEE 802.3](https://en.wikipedia.org/wiki/IEEE_802.3) data encapsulation includes the following:
 - **Ethernet frame**:
@@ -20,8 +21,6 @@ IEEE 802.3 also includes the specification, how different Ethernet communication
 - IEEE 802.3z Gigabit Ethernet over Fiber
 - IEEE 802.3ab Gigabit Ethernet over Copper
 - IEEE 802.3ae 10 Gigabit Ethernet over Fiber
-# Sublayers
-Ethernet operates on the [[(OSI) Open Systems Interconnection-Modell#Media Access Control (MAC) Sublayer|MAC Sublayer]] of the data link layer, which is responsible for data encapsulation and accessing the media.
 
 >[!note]
 >Legacy Ethernet using a bus topology or hubs, is a shared, half-duplex medium. which uses a contention-based access method, *[[(OSI) Open Systems Interconnection-Modell#Carrier sense multiple access with collision detection (CSMA/CD)|carrier sense multiple access with collision detection]]*. This allows multiple devices to share the half-duplex medium and detecting collisions when multiple devices attempt to transmit simultaneously. It also provides back-off algorithm for retransmission.

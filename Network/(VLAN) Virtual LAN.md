@@ -56,13 +56,6 @@ To support Voice over IP (VoIP) a separate VLAN with the following characteristi
 
 To meet these requirements the entire network has to be designed to support VoIP.
 
-# VLAN in a Multi-Switched Environment
-## Defining VLAN Trunks
-*VLAN trunks* allow VLAN traffic to propagate between switches, which enables devices connected to different switches but in the same VLAN to communicate without a router.
-
->[!definition]
->A trunk is a point-to-point link between two network devices that carries more than one VLAN.
-
 # VLAN Tagging
 The standard [[Ethernet#Frames|Ethernet frame header]] does not contain information about the VLAN to which the frame belongs. To add these information the IEEE 802.1Q header is used in a process called *tagging*. This header includes a 4-byte tag inserted into the original Ethernet frame between the Source and EtherType field, specifying the VLAN.
 ## VLAN tag fields
@@ -204,7 +197,14 @@ To delete the entire `vlan.dat` file use `delete flash:vlan.dat`. This will dele
 >[!tip]
 >To restore a Catalyst switch to its factory default condition, unplug all cables except the console and power cable from the switch. Then enter the `erase startup-config` privileged EXEC mode command followed by the `delete vlan.dat` command.
 
-# Trunk Configuration
+# Trunks
+## Defining VLAN Trunks
+*VLAN trunks* allow VLAN traffic to propagate between switches, which enables devices connected to different switches but in the same VLAN to communicate without a router.
+
+>[!definition]
+>A trunk is a point-to-point link between two network devices that carries more than one VLAN.
+
+## Trunk Configuration
 #Cisco_CLI 
 >[!important]
 >Remember a VLAN trunk is a Layer 2 link between two switches that carries traffic for all VLANs (unless the allowed VLAN list is restricted manually or dynamically).
@@ -244,10 +244,10 @@ S1(config-if)# end
 >- `none`: no VLANs
 >- `remove`: remove VLANs from the current list
 
-## Verify Trunk Configuration
+### Verify Trunk Configuration
 To verify the Trunk configuration use `show interface interface-id switchport` or `show interfaces trunk`
 
-## Reset the Trunk to the Default State
+### Reset the Trunk to the Default State
 To remove the allowed VLANs and reset the native VLAN of the trunk use the commands `no switchport trunk allowed vlan` and `no switchport trunk native vlan`
 ```
 S1(config)# interface fa0/1
@@ -256,7 +256,7 @@ S1(config-if)# no switchport trunk native vlan
 S1(config-if)# end
 ```
 
-# Dynamic Trunking Protocol (DTP)
+## Dynamic Trunking Protocol (DTP)
 The *Dynamic Trunking Protocol (DTP)* is a Cisco proprietary protocol that automatically negotiates trunking with a neighboring device.
 To enable trunking from a Cisco switch to a device that does not support DTP, use the `switchport mode trunk` and `switchport nonegotiate` command, this causes the interface to become a trunk, but it will not generate DTP frames.
 ```
@@ -274,7 +274,7 @@ If the ports connecting two switches are configured to ignore all DTP advertisem
 >When configuring a port to be in trunk mode, use the `switchport mode trunk` command. Then there is no ambiguity about which state the trunk is in; it is always on.
 
 
-## Negotiated Interface Modes
+### Negotiated Interface Modes
 The `switchport mode` command has additional options for negotiating the interface mode.
 ```
 Switch(config-if)# switchport mode {  access | dynamic {  auto | desirable } |  trunk }
@@ -302,13 +302,13 @@ The options are:
 >link.
 
 ![[Results of DTP Configuration.png]]
-## Verify DTP Mode
+### Verify DTP Mode
 To verify the DTP mode use `show dtp interface interface-id`.
 
 >[!note]
 >A general best practice is to set the interface to `trunk` and `nonegotiate` when a trunk link is required. On links where trunking is not intended, DTP should be turned off.
 
-## DTP as a Vulnerability
+### DTP as a Vulnerability
 DTP is a security vulnerability as an attacker can exploit it to form a trunk link to a switch and gaining access to the VLANs in a LAN. 
 Although end host do not use DTP messages a malicious user can use tools like [Yersinia](https://www.kali.org/tools/yersinia/) to send DTP messages.
 ![[DTP Yersinia Hack.png]]
@@ -320,14 +320,14 @@ To prevent this you can either:
 >[!note]
 >It is a security best practice to use `switchport nonegotiate` to disable DTP on switch ports, even if you configure the port in trunk mode.
 
-# VLAN Trunking Protocol (VTP)
+## VLAN Trunking Protocol (VTP)
 The *VLAN Trunking Protocol (VTP)* is another Cisco-proprietary protocol enables switches to synchronize their VLAN databases, the file in that stores information about existing VLANs. This is important as switches will drop packets from VLANs they do not know.
 ![[VLAN Trunking Protocol.png]]
 
 >[!note] 
 >The VLAN database is stored is stored in the `vlan.dat` file, which can be viewed with the `dir flash:` or `show flash:` commands.
 
-## VTP Revision Number and Domain
+### VTP Revision Number and Domain
 The *VTP revision number* is used to track the latest version of a VLAN database, it starts with 0 and is incremented when the database is changed (a VLAN is created, deleted, renamed). This also causes the switch to inform other switches in the *VTP domain* of the changes so they can update their databases.
 
 >[!warning]
@@ -345,7 +345,7 @@ By default, switches do not have a VTP domain name so you have to configure one 
 SW1(config)# vtp domain Domain1
 ```
 After that SW1 will send VTP messages to other switches in the LAN and all switches without a VTP domain name will adopt the domain name from SW1.
-## VTP Modes
+### VTP Modes
 A switch can operate in one of four different modes, which can be configured with the `vtp mode mode` command.
 - **Server**:
     - default mode 
@@ -373,24 +373,24 @@ A switch can operate in one of four different modes, which can be configured wit
 	- does not forward VTP messages
 	- recommended mode for all switches if VTP is not used in the LAN
 
-## VTP Versions
+### VTP Versions
 There are three versions of VTP available, but Version 1 and 2 are outdated.
 Version 3 introduced the off mode, the primary/secondary server concept and extended-range VLAN support.
 You can set the VTP version with the `vtp version version` command:
 ```
 SW1(config)# vtp version 3 
 ```
-### Primary/ Secondary Server
+**Primary/ Secondary Server**
 The *Primary Server* in VTP version 3 is the only server in a VTP domain that can create, modify and delete VLANs. You can set the primary server with the `vtp primary` command:
 ```
 SW1# vtp primary
 ```
 
 The other switches in server mode are now *Secondary Servers* and are functionally clients, but they become the primary server when the `vtp primary` command is executed on it.
-### Extended-Range VLANs
+
+**Extended-Range VLANs**
 Before Version 3 only the normal-range VLANs 1-1005 were available for use, the extended-range VLANs 1006-4094 were reserved for internal application.
 
-## VTP 
 
 # Inter-VLAN Routing
 Hosts in one VLAN cannot communicate with hosts in other VLANs, unless there is a router or a Layer 3 switch.
