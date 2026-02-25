@@ -333,5 +333,116 @@ To ensure the availability of a wireless LAN, devices should be maintained and r
 
 ## Wired Equivalent Privacy (WEP)
 The original 802.11 standard defined the *Wired Equivalent Privacy (WEP)* security protocol, which promised privacy to wireless communications equivalent to that of wired communication. It is now obsolete and a *legacy protocol*, as it has various vulnerabilities and is insecure.
-
  
+### Open System and Shared Key Authentication
+*Open System Authentication* and *Shared Key Authentication* are the two methods of authentication defined by WEP. 
+
+Open System Authentication does not exchange credentials, a client simply sends an authentication request and the AP sends a authentication response unless the request itself is faulty (f.e. invalid formatting). This is done to authenticate that both devices are valid 802.11 devices.  
+>[!note]
+>OSA is used in the *Client Association Process*.
+
+Shared Key Authentication uses a static WEP key (Wi-Fi password) on the AP, that each client has to know to authenticate itself. 
+The process used for it is:
+1. The client sends an authentication request
+2. The AP sends a response and a unencrypted *challenge phrase*
+3. The client uses the WEP key to encrypt the challenge phrase and sends the ciphertext back to the AP
+4. The AP uses the WEP key to decrypt the challenge phrase and compares it to the original challenge phrase
+5. If the decrypted and the original challenge phrase match the AP sends back a final authentication response indicating a successful authentication
+
+![[Shared Key Authentication.png|609x217]]
+
+>[!note]
+>A static WEP key can be either 40 or 104 bits long. In addition the device generates a random 24 bit number called an *initialization vector (IV)* that is generated for each packet and combined with the WEP key.
+
+### WEP Encryption and Integrity
+WEP uses the *Rivest Cipher 4* encryption algorithm and the same key used in Shared Key Authentication  can be used to to encrypt data messages from and to the wireless clients. 
+Integrity is ensured by appending a 32 bit checksum called the *integrity check value (ICV)* to each plaintext message before it is encrypted.
+
+## Wi-Fi Protected Access (WPA)
+![[WPA Genarations.png]]
+WPA was developed by the Wi-Fi Alliance as an interim enhancement after the vulnerabilities of WEP were discovered, until the IEEE developed a more permanent solution, the 802.11i standard.
+WPA3 is as of 2020 the latest WPA standard and offers:
+- superior security protocols
+- *Protected Management Frames (PMF)*
+  ensures the authenticity and integrity of 802.11 management frames (authentication and association)
+- *Forward Secrecy (FS)*
+  also known as *Perfect Forward Secrecy (PFS)*; ensures that the encrypted data remains encrypted even if the PSK is compromised, meaning you cannot decrypt past messages with a PSK, as for every session a new encryption key is derived from the PSK
+
+
+WPA defines two authentications methods:
+- *WPA-Personal*: designed for small office / home office (SOHO) networks, it uses a pre shared key authentication
+- *WPA-Enterprise*: designed for enterprise LANs, it uses individual credentials for useres or devices
+
+### WPA-Personal
+WPA-Personal uses a *pre-shared key (PSK)* either a static 256 bit string used to generate secure encryption keys or a 8 to 63 character passphrase (Wi-Fi Password) that is automatically converted into a 256 bit PSK.  
+
+![[PSK four way handshake.png]]
+
+>[!note]
+>Note that the authentication occurs after the client has associated itself with the AP.
+
+The *four-way handshake* is the process used by WPA and WPA2 for authentication, it is used to confirm that the client and the AP have the same PSK and to generate a unique encryption keys to encrypt and decrypt data sent to and from the client.  
+
+>[!note]
+>This method is more secure than WEP shared key authentication, but if an attacker manages to capture the four-way handshake the attacker could brute-force the PSK.
+
+*Simultaneous Authentication of Equals (SAE)* is used by WPA3, which takes place before the association and allows the client and AP to verify that they have matching PSKs without the vulnerability of a brute-force attack to learn the PSK, even though SAE also uses a PSK.
+
+![[SAE.png|597x246]]
+
+### WPA-Enterprise
+WPA-Enterprise authenticates each individual user or device through the IEEE 802.1X standard, which uses the *Extensible Authentication Protocol (EAP)* framework. EAP defines various *EAP methods*, some of them are:
+
+- *Lightweight EAP (LEAP)*
+The client authenticates with a username and password, the client and authentication server exchange challenge phrases. 
+  >[!note]
+  >LEAP was developed by Cisco to address WEP's vulnerabilities, but uses WEP encryption and is no longer secure.
+
+- *EAP-Flexible Authentication vie Secure Tunneling (EAP-FAST)*
+To authenticate the client with the authentication server a Transport Layer Security (TLS) tunnel using a Protected Access Credential (PAC), a shared secret, is established through which the credentials are exchanged.
+>[!note]
+>EAP-FAST was developed by Cisco to replace LEAP.
+
+- *Protected EAP (PEAP)*
+The authentication server has a digital cerificate that the client uses for authentication and to establish a TLS tunnel through which credentials are exchanged.
+
+- *EAP-Transport Layer Security (EAP-TLS)*
+The authentication server and the client each have a digital certificate that they use for authentication.
+
+Although EAP defines these methods it does not define how these messages should be send over the network. This is done by 802.1X, which defines how to encapsulate EAP messages over the LAN, called *EAP over LAN (EAPoL)*.
+EAPoL transports EAP messages between the devices roles: 
+- *Supplicant*: Client device that wants to connect to the network
+- *Authenticator*: The network device that the client connects to (AP)
+- *Authentication server*: The server that verifies the supplicant's credentials 
+
+![[EAPoL.png|552x222]]
+
+>[!note]
+>This set of protocols form the "802.1X/EAP protocol stack" used to enable authentication vie EAP.
+>![[802.1X-EAP protocol stack.png|525x217]]
+
+## Wireless Encryption and Integrity
+### Temporal Key Integrity Protocol (TKIP)
+*TKIP* was developed as an enhancement to WEP after the vulnerabilities were discovered, until new protocols and hardware to use these protocols was developed.
+> [!NOTE]
+> WEP's main flaw was that it used static encryption keys, all clients used the same key and it remained the same unless an admin manually configured a new passphrase.
+
+
+The improvements TKIP offers are:
+- *per-packet key mixing*:
+  a new key is is generated for each packet making it harder to brute force the PSK
+- *message integrity check (MIC)*
+  a stronger integrity checksum
+- adding a sequence number to each frame to mitigate replay attacks
+>[!note]
+>A *replay attack* is when an attacker captures valid messages and retransmits them later, gaining unauthorized access to a system.
+
+### Counter Mode with Cipher Block Chaining Message Authentication Code Protocol (CCMP)
+*CCMP* was defined in the 802.11i standard, which formed the basis for WPA2, providing message encryption and integrity.
+It uses the *Advanced Encryption Standard (AES)*, specifically AES *counter mode* encryption, which uses a counter value that is incremented and encrypted with each block, ensuring that each block of data is encrypted with a unique key.
+*Cipher Block Chaining Message Authentication Code (CBC-MAC)* a more robust data integrity checksum than TKIP's MIC.
+### Galois/Counter Mode Protocol (GCMP)
+*GCMP* is a used by WPA3 and offers improved security and efficiency, which is necessary for the faster data rates of the newer 802.11 standards.
+It uses AES counter mode encryption with a key length of 128 or 256 bits and *Galois Message Authentication Code (GMAC)* for its data integrity checksum.
+# Configuration on Cisco Devices
+#Cisco_CLI 

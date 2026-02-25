@@ -62,7 +62,7 @@ The Linux filesystem is hierarchical single-root filesystem meaning at the top l
 - **Move** a file or directory:
   ```
   $ mv /source/path /destination/path
-	```
+  ```
 - **Copy** a file or directory:
   ```
   $ cp /source/path /destination/path

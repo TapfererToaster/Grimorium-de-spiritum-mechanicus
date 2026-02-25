@@ -245,7 +245,7 @@ ARM provides the following:
 - **Templates**
   [[(JSON) JavaScript Object Notation|JSON]] or Bicep files providing repeatable and automated deployment
 
-# Resources
+# Core Resources
 ## Compute Resources
 >[!note]
 >The term "compute resource" means "a platform to execute code on" and is used to run software and process data.
@@ -328,10 +328,79 @@ When deploying VMs on Azure you should take broader considerations.
   >Scale set is an IaaS with "auto-scaling" for VM-based workloads such as web and application services. You specify the number of VMs and OS type to be deployed in the Scale Set. These provide multiple fault domains and update domains as they are automatically deployed and protect against data center failures.
   >This provides automatic scaling, load balancing, availability, and fault tolerance.
   
-### Container
+### [[Container]]
 The container services are described as:
-- **Azure Container Instances (ACI)**: Platform as a Service for containers running in Azure
+- **Azure Container Instances (ACI)**: [[Cloud#Platform as a Service (PaaS)|Platform as a Service]] for containers running in Azure
 - **Azure Container Apps (APA)**: Like ACI, but provides scaling and load balancing
 - **Azure Kubernetes Service (AKS)**: Container hosting platform and orchestration service for managing containers
 
 #### Azure Container Instances (ACI)
+*Azure Container Instances* are a multitenant, serverless *Container as a Service (CaaS)* platform, which is basically a PaaS for containers running on Azure. You can create a container without concerning yourself with management or additional services and orchestration.
+ACI are best suited for jobs that:
+- are rarely used or scheduled,
+- temporary or demand-driven/event-driven 
+- do not interact with other containers or services 
+- do not require advanced orchestration, load balancing or autoscaling
+
+>[!note]
+>*serverless* means that Microsoft provides and manages the underlying hosts, VMs, container engine, orchestration components and so on.
+#### Azure Container Apps (ACA)
+*ACA* is a fully managed serverless container service platform using Kubernetes, DAPR, Kubernetes Event-Driven Autoscaling (KEDA) and envoy open-source technologies.
+It allows applications and microservices to be built without having to manage container orchestration.
+
+>[!note]
+>No direct access to the underlying APIs, control plane and cluster management of Kubernetes is given.
+
+#### Azure Kubernetes Service (AKS)
+*AKS* is a container hosting platform and orchestration service for managing containers at a large scale. 
+
+> [!NOTE]
+> Like ACI it can be considered as a CaaS, but is designed for highly customizable, scalable and portable workloads
+
+The AKS service architecture has two elements, the master node (the control plane managed by Microsoft) and the worker node (Pods managed by the customer). The master node is responsible for scheduling the worker nodes, Pods. The worker nodes are the VMs that run the node's components and the container runtime. 
+
+### Azure App Service
+![[Azure App Service.png]]
+
+*Azure App Service* is a [[Cloud#Platform as a Service (PaaS)|Platform as a Service]] providing a website and code-hosting platform fully managed by Microsoft. It supports Windows and Linux workloads, multiple frameworks and programming languages.
+Each app service runs inside an "App Service plan", each with a tariff that has a set of features and functionalities. 
+The App Service plan defines the number, the type, size, properties and the region of the VMs that will be created.
+The pricing tiers of App Service are:
+- *Free and shared*
+  intended for development and testing; no SLA is provided; your app will run on the same resources as other customers and there is no support for autoscaling, hybrid or VNet connectivity
+- *Basic service plan*
+  intended for low traffic usage that dies not require advanced autoscaling and traffic management features; it has basic load balancing across instances, custom domains and hybrid connectivity is supported 
+- *Standard service plan*
+  intended for running production workloads; it supports custom domains, autoscaling, hybrid and VNet connectivity
+- *Premium V2/V3*
+  intended for larger scale and performance production workloads; it supports all features of the standard plan, plus private endpoints
+- *Isolated V2/V3*
+  intended for mission-critical workloads required to run on a virtual network in a private, dedicated environment
+
+### Azure Functions
+*Azure Functions* is a [[Cloud#Serverless/ Function as a Service (FaaS)|Function as a Service (FaaS)]] or "serverless code engine". It is used for events that trigger code, the Functions code is then executed as a response to that event trigger.
+
+### Azure Virtual Desktop Service
+![[Azure Virtual Desktop Service.png]]
+*Azure Virtual Desktop Service* is a [[Cloud#Platform as a Service (PaaS)|PaaS]] that allows users to connect to their desktops and applications hosted in Azure from any location with internet connection or a private managed network (such as Microsoft ExpressRoute service).
+Virtual Desktop Service has the following components:
+- *Microsoft-provided and -managed platform services*:
+  PaaS functions where Microsofts provides managed web access, gateway and broker roles; these allow secure connectivity service layer that connects users with their desktop and apps
+- *Host pools*:
+Collection of VMs that will run the users' desktop and remote apps.
+>[!note]
+>There are two load-balancing methods:
+>- *Depth mode*:
+>  saves costs by utilizing a single VM to host users' sessions before placing a session on the next VM, this is called *vertical load balancing*
+>- *Breadth mode*:
+>  best performance as each user session is created on the next available VM and never on the same VM as the last session, this is called *horizontal load balancing*
+- *Customer-created desktops*:
+Infrastructure resources providing the users' desktop and apps
+- *Customer-created remote applications*:
+Applications no longer need to be installed on the VM OS itself, through the MSIX app attach functionality they are decoupled from the OS and are dynamically attached to the VM the user is connected to
+- *Users profiles*:
+FSLogix profile container is used to store the user profile on a *Virtual Hard Disk (VHD)*, which is then dynamically attached to the VM the user is connected to
+- *Third-party provided and managed virtual desktop platform services*:
+Vendors such as Citrix and VMware are part of the ecosystem and provide additional features; you can also use their presentation or management layers to connect to your virtual desktop
+
+## Azure Network Services

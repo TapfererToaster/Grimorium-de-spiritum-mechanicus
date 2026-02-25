@@ -93,7 +93,7 @@ What devices belong in which subnet can be determined by:
   
 ## Broadcast Domains 
 In an Ethernet LAN devices use *[[(ARP) Address Resolution Protocol]]* to locate other devices on the network. ARP sends [[(OSI) Open Systems Interconnection-Modell#2. Datensicherungsschicht (Data Link, Layer 2)|Layer 2]] broadcasts to known IPv4 addresses on the local network to discover the associated MAC address. 
-Devices typically acquire IPv4 address configuration using the *[[(DHCPv4) Dynamic Host Configuration Protocol]], sending a broadcast on the local network to a DHCP server.
+Devices typically acquire IPv4 address configuration using the *[[(DHCPv4) Dynamic Host Configuration Protocol]]*, sending a broadcast on the local network to a DHCP server.
 Switches send broadcasts out all interfaces except the interface on which it was received.
 >[!warning] Large Broadcast Domains
 > The hosts in a large broadcast domain can generate excessive broadcasts, which can slow down network operations, due to high network traffic. 

@@ -27,11 +27,9 @@ Der CPU wird auf der Hauptplatine (Motherboard) in einem Sockel aufgesteckt. Jed
 - Der *Steuerbus* steuert die Peripherieanschlüsse
 
 **Arbeitsspeicher - Random Access Memory (RAM)**
-Der RAM wird benutzt zur Speicherung von Programmen die ausgeführt werden, und den Daten die von ihnen verarbeitet werden.
-Früher wurden der RAM mit derselben Taktfrequenz wie das motherboard betrieben. bei modernen PCs jedoch mit einem vielfachen des motherboards.
+Der [[Arbeitsspeicher]] wird zur Speicherung von Programmen, die ausgeführt werden, und den Daten die von ihnen verarbeitet werden, benutzt.
+Früher wurden der RAM mit derselben Taktfrequenz wie das motherboard betrieben. Bei modernen PCs jedoch mit einem vielfachen des motherboards.
 
->[!note]
-> Falls der Arbeitsspeicher nicht ausreicht, um die Daten der aktuell geladenen Programme zu speichern, werden Daten die nicht dringend benötigt werden aus dem RAM auf die Festplatte verschoben. Dies wird je nach Betriebssystem *Swapping* oder *Paging* genannt. Moderne Prozessoren unterstützen diese Speicherverwaltung durch eine *Memory Management Unit (MMU)*.  
 ## Cache
 Caches werden als kleine, aber sehr schnelle Zwischenspeicher benutzt, in denen Daten oder Befehle gespeichert werden können um sie kurz danach zu benutzen. Sie werden verwendet um den großen Unterschied der Taktfrequenz von Arbeitsspeicher und CPU zu überbrücken.
 Programmierer haben keinen großen Einfluss, welche Daten im Cache gespeichert werden, diese Entscheidung wird von der *Sprungvorhersage (Branch Prediction)* gesteuert. Der Prozessor berechnet während der Ausführung von Programmen wohin der nächste Sprung im Programm erfolgt und entscheidet darauf welche Daten oder Programmteile im Cache gespeichert werden.
@@ -82,8 +80,53 @@ Die tatsächliche Effizienz von CPUs lässt sich besser bestimmen durch:
 - **Floating Point Operations per Second (FLOPS)**
   Die Anzahl von durchführbaren Fließkommaoperationen pro Sekunde. 
   Wichtig für 3D-Grafik, Video- und Audioperformance. 
-
 # Architektur
+## Complex Instruction Set Computer (CISC)
+*CISC* versuchen komplexe Anweisungen durch einzelne Prozessorinstruktionen auszuführen, haben also einen komplexen Befehlssatz.
+Prozessoren von Intel und AMD sind die Hauptvertreter der CISC-Architektur, jedoch wurden auch RISC-artige Aspekte in die Prozessoren integriert um die Effizienz zu verbessern. So werden die komplexen CISC-Befehle in einzelne RISC-artige Mikroinstruktionen zerlegt und anschließend vom Prozessorkern mit höherer Effizienz ausgeführt. 
+## Reduced Instruction Set Computer (RISC)
+*RISC* versuchen die Struktur des Prozessors zu vereinfachen, indem der Befehlssatz auf wenige schnell und einfach auszuführende Befehle reduziert werden. Komplexe Anweisungen können durch mehrere einfache Befehle ausgeführt werden. Außerdem lassen sich die Befehle in effiziente *Pipelines* (Warteschlangen) anordnen.  
+Ein Nachteil der RISC-Architektur ist, dass die CPU einen größeren Arbeitsspeicher benötigt, da ein Maschinenprogramm aus mehreren Einzelbefehlen besteht und diese mehr Platz brauchen.
+# Arbeitsweise
+Schematisch arbeitet der Prozessor bei der Ausführung eines Programms folgt:
+1. Der aktuelle Befehl wird aus dem Programm gelesen und die Stelle wird durch den Befehlszeiger des Prozessors angezeigt
+2. Der Prozessor liest den Befehl aus der Befehlstabelle und nimmt die passende Anzahl darauffolgender Bytes als Parameter; der Befehlszeiger rückt hinter das letzte Parameter-Byte um den nächsten Befehl zu lesen
+3. Der Befehl wird ausgeführt; hier kann es zum Lesen von Daten aus dem Arbeitsspeicher, der Ansteuerung von Peripherieschnittstellen, Rechnen in der ALU oder die Durchführung eines Sprungs kommen.
+4. Falls ein Sprung stattfindet wird der Befehlszeiger an die angegebene Stelle gesetzt, ansonsten geht es mit dem nächsten Befehl weiter.
+
+## Sprünge
+Es gibt zwei Arten von Sprüngen:
+- *unbedingte Sprünge*
+Der Sprung wird immer ausgeführt sobald der Befehl gelesen wird
+- *bedingter Sprung*
+Der Sprung wird nur ausgeführt wenn eine bestimmte Bedingung erfüllt wird. Diese Bedingung wird mit dem Zustand eines *Flag-Register*, ein Status-Bit das durch Vergleiche, Fehler oder direkte Manipulation gesetzt werden, angezeigt. 
+
+>[!note]
+>Beim Sprung in ein Unterprogramm, wird die auf den Sprungbefehl folgende Adresse auf dem *Stack* gespeichert, um nach der Ausführung des Programms an die Richtige Stelle im Programm zurück zu springen. Der Stack ist ein Stapelspeicher der nach dem Last-in-first-out Prinzip, das heißt das die zuletzt hinzugefügte Adresse im Stack beim erfolgen des Rücksprungbefehls ausgelesen wird. Der aktuelle Abschluß des Stack wird von von einem speziellen Steuerregister, dem *Stack Pointer*, angezeigt.
+>
+## Interrupts
+*Interrupts* werden bei Ein- und Ausgabevorgängen benutzt, da die Anfragen der Hardware an den Prozessor asynchron erfolgen, muss der Prozessor die Hardware in regelmäßigen Intervallen abfragen und das laufende Programm unterbrechen.
+
+# Maschinenbefehle
+Maschinenbefehle sind einfache Befehle die den Maschineninstruktionen und der Maschinensprache sehr nahe kommen aber immer noch verständlich für Menschen sind.
+Ein Beispiel ist die Assembler-Sprache, die jedoch von Prozessorherstellern oft proprietäre Befehle haben. 
+Typische Befehle sind:
+- `MOV`: Lese den Wert aus der Speicherzelle X und lege sie in das Rechenregister Y ab.
+```
+MOV Y, X 
+```
+- `ADD`: Addiere den Wert 10 zum Inhalt des Rechenregisters X
+```
+ADD X, 10
+```
+- `CMP`: Vergleiche den Inhalt des Registers X mit dem Wert 20
+```
+CMP X, 20
+```
+- `JE`: Falls der Vergleichsbefehl gleich ergeben hat springe zu der Programmadresse X; JE steht für "jump if equal"
+```
+JE X
+```
 
 # Threading
 Beim *Threading* werden mehrere Aufgaben (*Threads*) parallel von einem Prozessor bearbeitet. 

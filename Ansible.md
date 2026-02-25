@@ -1,5 +1,7 @@
 # Install
+```
 pip --install ansible
+```
 # Vagrant
 A login into the VM with `vagrant ssh` lets you interact with the Bash shell, but Ansible needs to connect to the VM via regular SSH. 
 To achieve this you need to output the SSH configuration of Vagrant:

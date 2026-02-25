@@ -1,6 +1,5 @@
-
 Cloud computing is the delivery of services and infrastructure, such as VMs, storage, databases and networking, as well as IoT, machine learning (ML) and AI using a consumption based pricing model.
-Cloud computing allows the user to up- or downscale the services or infrastructure they need, f.e. if the needed computing power increases you increase your IT footprint instead of building a new datacenter.
+Cloud computing allows the user to up- or downscale the services or infrastructure they need, f.e. if the needed computing power increases you increase your IT footprint instead of building a new data center.
 
 >[!note]
 >Cloud services fall under *operational expenditure (OpEx)*, meaning you pay a regular sum for the resources you use.
@@ -18,7 +17,7 @@ Essential **characteristics** of cloud computing:
 - *Rapid elasticity*
   Cloud resources should be able to scale "infinitely", scaling up or down, based on demand - even automatic, in some cases
 - *Measured service*:
-  Cloud resources are metered ad users are charged for what they use. Usage can be monitored, controlled and reported
+  Cloud resources are metered as users are charged for what they use. Usage can be monitored, controlled and reported
 
 Three service models:
 - *Software as a Service (SaaS)*
@@ -31,7 +30,7 @@ Deployment models:
 - *Public cloud*
 - *Hybrid cloud*
 # Shared Responsibility Model
-With a traditional datacenter the company is responsible for maintaining the physical space, ensuring security und maintaining and replacing server and the IT department is responsible for the digital infrastructure and the software.
+With a traditional data center the company is responsible for maintaining the physical space, ensuring security und maintaining and replacing server and the IT department is responsible for the digital infrastructure and the software.
 When using cloud services the responsibilities are split between the cloud provider and the consumer depending on what service is used:
 - *Software as a Service (SaaS)*
 - *Platform as a Service (PaaS)*
